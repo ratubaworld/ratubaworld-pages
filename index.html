@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--
-  Layout from Wayback: https://web.archive.org/web/20081013110222/http://www.ratubaworld.com/
-  Comments: Utterances (https://utteranc.es) — set REPO in script; public repo + GitHub App required.
--->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ratuba World — 2008 replica + Utterances (GitHub) comments</title>
+  <title>Ratuba World</title>
   <style>
     body {
       margin: 0;
@@ -28,7 +24,7 @@
       margin: 0 auto;
       padding: 12px 10px 40px;
     }
-    /* —— Framed Flash header (724×170) —— */
+    /* Framed banner */
     .flash-frame {
       display: table;
       margin: 0 auto;
@@ -63,7 +59,6 @@
     }
     .top-bot { height: 23px; width: 724px; background: linear-gradient(180deg, #6a86b8, #4a6090); border-top: 1px solid #8aa4d0; }
 
-    /* 728×90 ad strip colors from archived AdSense block */
     .ad728 {
       margin: 6px auto 0;
       width: 728px;
@@ -106,7 +101,7 @@
     .welcome-cap:first-of-type { border-radius: 0 0 0 4px; margin-right: 2px; }
     .welcome-cap:last-of-type { border-radius: 0 0 4px 0; margin-left: 2px; }
 
-    /* Main grid: left gutter / blue column / right rail */
+    /* Main grid */
     .main-grid {
       display: flex;
       flex-wrap: wrap;
@@ -334,21 +329,13 @@
       border-radius: 0 0 6px 6px;
       box-sizing: border-box;
     }
-    .footer-md strong a.link1:hover { color: Navy; text-decoration: underline; }
-    .note {
-      text-align: center;
-      font-size: 10px;
-      color: rgba(0, 0, 0, 0.55);
-      margin-top: 12px;
-    }
-    @media (max-width: 900px) {
       .welcome-wrap .welcome-cap { display: none; }
       .col-left-ads { width: 100%; order: 3; }
       .col-right { width: 100%; padding-left: 0; }
       .gutter { display: none; }
     }
 
-    /* —— Utterances / guestbook band (full width under main grid) —— */
+    /* Guestbook / comments band */
     .comments-band {
       max-width: 1100px;
       margin: 22px auto 0;
@@ -359,6 +346,7 @@
       min-height: 140px;
     }
     .comments-config-msg {
+      display: none;
       margin-top: 14px;
       padding: 12px 14px;
       border: 1px solid #885;
@@ -382,10 +370,7 @@
       <tr>
         <td class="top-left">&nbsp;</td>
         <td class="flash-cell">
-          <div class="flash-placeholder">
-            Embedded Flash banner area<br />
-            (~724×170, <code>top_bar_2.swf</code> in 2008)
-          </div>
+          <div class="flash-placeholder">Ratuba World</div>
         </td>
         <td class="top-right">&nbsp;</td>
       </tr>
@@ -396,7 +381,7 @@
       </tr>
     </table>
 
-    <div class="ad728">728 × 90 “AdSense-style” banner · border #2D5893 · fill #99AACC (from archived markup)</div>
+    <div class="ad728" aria-hidden="true">&nbsp;</div>
 
     <div class="welcome-wrap">
       <div class="welcome-cap"></div>
@@ -408,14 +393,14 @@
 
     <div class="main-grid">
       <div class="col-left-ads">
-        <div class="mini">Small ad slot<br />110×32 class area</div>
+        <div class="mini">&nbsp;</div>
       </div>
       <div class="gutter" aria-hidden="true"></div>
 
       <div class="col-main">
         <div class="toolbar">
           <div class="toolbar-inner">
-            <span class="stat-pill">[hits counter]</span>
+            <span class="stat-pill">&nbsp;</span>
             <div class="nav-btns">
               <a href="#">Home</a>
               <a href="#">Login</a>
@@ -426,7 +411,6 @@
           </div>
         </div>
         <div class="inner-pad">
-          <!-- News excerpt inspired by archived front page -->
           <div class="news-top"></div>
           <div class="news-md">
             <div class="news-head">
@@ -455,7 +439,7 @@
           <div class="news-top"></div>
           <div class="news-md">
             <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:4px;"><tr>
-              <td valign="top" width="60"><a href="#"><div class="avatar" title="avatar slot"></div></a></td>
+              <td valign="top" width="60"><a href="#"><div class="avatar"></div></a></td>
               <td>
                 <strong style="font-size:12px;">About the forums…</strong><br />
                 <span style="font-size:10px;">
@@ -481,40 +465,27 @@
       <div class="gutter" aria-hidden="true"></div>
 
       <div class="col-right">
-        <div class="tower">120 × 600 tower ad slot<br /><span style="font-size:9px">(graphic chrome was on the archived page)</span></div>
+        <div class="tower" aria-hidden="true">&nbsp;</div>
         <div class="newsletter">
           <div class="top">Newsletter</div>
           <div class="mid"></div>
           <div class="form">
             Email:
             <input type="text" value="Enter your E-mail" readonly />
-            <button type="button" class="sub">Subscribe (mock)</button>
+            <button type="button" class="sub">Subscribe</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- GitHub-backed comments: Utterances (free). Requires public repo + GitHub App install; see yellow box until REPO is set. -->
     <div class="comments-band">
       <div class="news-top"></div>
       <div class="news-md">
-        <strong style="font-size:12px;">Site guestbook / comments</strong><br />
-        <span style="font-size:10px;">
-          Powered by <a href="https://utteranc.es" target="_blank" rel="noopener">Utterances</a> (GitHub Issues, free).
-          Commenting <em>requires a GitHub sign-in</em>, which blocks almost all bot spam. You moderate from the repo’s <strong>Issues</strong> tab.
-        </span>
+        <strong style="font-size:12px;">Guestbook</strong><br />
+        <span style="font-size:10px;">Sign in with GitHub to leave a comment.</span>
         <div id="utterances-comments" aria-live="polite"></div>
         <div id="comments-config-msg" class="comments-config-msg">
-          <strong>One-time setup (~5 min):</strong>
-          <ol style="margin:8px 0 0 18px;padding:0;">
-            <li>Create a <strong>public</strong> GitHub repository (Issues enabled), e.g. <code>yourname/ratubaworld-comments</code>.</li>
-            <li>Install the Utterances app on that repo: <a href="https://github.com/apps/utterances" target="_blank" rel="noopener">github.com/apps/utterances</a>.</li>
-            <li>In this file, set <code>REPO</code> in the script below to <code>owner/repo</code>, then publish the site (e.g. <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>).</li>
-            <li>Serve over <strong>https</strong> — opening from <code>file://</code> usually breaks the widget.</li>
-          </ol>
-          <p style="margin:10px 0 0;">
-            Want <strong>Discussions</strong> instead of Issues? Use <a href="https://giscus.app" target="_blank" rel="noopener">giscus.app</a> (also free, similar GitHub login wall).
-          </p>
+          <p>If comments don’t load, install <a href="https://github.com/apps/utterances" target="_blank" rel="noopener">Utterances</a> on <code>ratubaworld/ratubaworld-comments</code>.</p>
         </div>
         <script>
         (function () {
@@ -530,8 +501,11 @@
             if (/\/\s*$/.test(r)) return false;
             return true;
           }
-          if (!repoOk(REPO) || !mount) return;
-          cfg.style.display = "none";
+          if (!repoOk(REPO) || !mount) {
+            if (cfg) cfg.style.display = "block";
+            return;
+          }
+          if (cfg) cfg.style.display = "none";
           var s = document.createElement("script");
           s.src = "https://utteranc.es/client.js";
           s.async = true;
@@ -556,11 +530,6 @@
         </td>
       </tr>
     </table>
-
-    <p class="note">
-      Layout from Wayback <strong>20081013110222</strong> + archived <code>style.css</code>.
-      Comments use Utterances once you set <code>REPO</code> and host on <strong>https</strong>.
-    </p>
   </div>
 </body>
 </html>
