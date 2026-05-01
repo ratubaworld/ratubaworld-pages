@@ -118,12 +118,12 @@
   <div class="wrap">
     <header>
       <h1>welcome to ratubaworld</h1>
-      <p class="subtle">Lightweight preview: tap play for chip audio (instant, no bundle). Guestbook uses Utterances (GitHub login for posters). Works best after publish on HTTPS.</p>
+      <p class="subtle">Lightweight preview: tap play for synthesized chip bleeps (no audio file bundled). Guestbook uses Utterances (GitHub login for posters). Works best on HTTPS.</p>
       <button type="button" class="pill" id="chip-toggle" aria-pressed="false">Play chip loop</button>
       <p class="hint">iPhone: sound starts after you tap (browser rule). Pause anytime.</p>
 
-      <!-- Optional: drop `media/ratuba-chiptune.wav` beside this preview and set src="" to prefer your file -->
-      <audio id="file-loop" class="fallback-hidden" src="" preload="none" playsinline loop></audio>
+      <!-- Optional WAV: set src="media/ratuba-chiptune.wav" and commit the file to use HTML audio instead of Web Audio. -->
+      <audio id="file-loop" class="fallback-hidden" preload="none" playsinline loop></audio>
     </header>
 
     <section class="card">
@@ -167,7 +167,10 @@
       (function () {
         var btn = document.getElementById("chip-toggle");
         var fileEl = document.getElementById("file-loop");
-        if (fileEl && fileEl.src) {
+        if (!btn) return;
+        /* Empty src resolves to page URL as .src — must use attribute so procedural audio still runs */
+        var fileSrc = fileEl ? (fileEl.getAttribute("src") || "").trim() : "";
+        if (fileEl && fileSrc.length > 0) {
           fileEl.volume = 0.45;
           btn.addEventListener("click", function () {
             if (fileEl.paused) {
