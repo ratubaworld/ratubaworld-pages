@@ -167,8 +167,8 @@ if ($st.Trim().Length -gt 0) {
   if (Test-Path (Join-Path $Root 'version.json')) {
     & $Git -C $Root add version.json
   }
-  if (Test-Path (Join-Path $Root 'build-stamp.js')) {
-    & $Git -C $Root add build-stamp.js
+  if (Test-Path (Join-Path $Root 'scripts')) {
+    & $Git -C $Root add scripts
   }
   $savedEap = $ErrorActionPreference
   $ErrorActionPreference = 'Continue'

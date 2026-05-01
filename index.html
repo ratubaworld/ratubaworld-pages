@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
-  Main Ratuba home (mobile-first). Music: embedded YouTube (streamed from YouTube, not downloaded here).
-  Classic 2008 chrome: classic-2008.html
+  Main Ratuba home (mobile-first). Hero track: WAV in /media (hard-rock remaster).
+  Classic layout: classic-2008.html
 -->
 <html lang="en">
 <head>
@@ -123,23 +123,8 @@
       position: relative;
     }
 
-    /*
-      YouTube iframe needs real dimensions but must not flash on-screen;
-      tucked off-layout (audio-only UX — playback still streams from YouTube).
-    */
-    .yt-audio-mount {
-      position: absolute;
-      width: 240px;
-      height: 136px;
-      left: -10000px;
-      top: 0;
-      overflow: hidden;
-      opacity: 0;
-      pointer-events: none;
-    }
-    .yt-audio-mount > div {
-      width: 100%;
-      height: 100%;
+    audio.fallback-hidden {
+      display: none;
     }
 
     .disclosure-below-card {
@@ -162,17 +147,13 @@
     <header>
       <h1>welcome to ratubaworld</h1>
       <p class="subtle">
-        Use <strong>Play</strong> for site music, or <a href="https://www.youtube.com/watch?v=hHW6yp8Ddp4" target="_blank" rel="noopener noreferrer">watch on YouTube</a>.
+        <strong>Play</strong> streams a hard-rock&ndash;style guitar remaster (WAV baked into this site).
+        Want the untouched upload? See it on <a href="https://www.youtube.com/watch?v=a7vzD-bmblw" target="_blank" rel="noopener noreferrer">YouTube</a>.
       </p>
-      <button type="button" class="pill" id="chip-toggle" aria-pressed="false" aria-controls="yt-player-host">Play</button>
-      <p class="hint" id="chip-hint">Tap Play for audio only. To watch the clip, use Open on YouTube.</p>
+      <button type="button" class="pill" id="chip-toggle" aria-pressed="false" aria-controls="file-loop">Play</button>
+      <p class="hint" id="chip-hint">Tap Play for audio &mdash; works on HTTPS Pages; local <code>file://</code> may block WAV.</p>
 
-      <div class="yt-audio-mount" id="yt-shell" aria-hidden="true">
-        <div id="yt-player-host"></div>
-      </div>
-      <p class="hint" style="margin-top:8px;">
-        <a href="https://www.youtube.com/watch?v=hHW6yp8Ddp4" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
-      </p>
+      <audio id="file-loop" class="fallback-hidden" preload="metadata" playsinline loop></audio>
     </header>
 
     <section class="card">
@@ -213,126 +194,66 @@
       </script>
       <script>
       (function () {
-        var VIDEO_ID = "hHW6yp8Ddp4";
+        var MEDIA = "media/modern-hardrock-a7vz.wav";
+        function resolveMediaHref(path) {
+          try {
+            var base = window.location.href.split("#")[0].split("?")[0];
+            if (/\.html?$/i.test(base)) base = base.replace(/[^/\\]+$/, "");
+            if (!/\/$/i.test(base)) base += "/";
+            return new URL(path, base).href;
+          } catch (err) {
+            return path;
+          }
+        }
+
         var btn = document.getElementById("chip-toggle");
         var hint = document.getElementById("chip-hint");
-        var host = document.getElementById("yt-player-host");
-        if (!btn || !host) return;
+        var fileEl = document.getElementById("file-loop");
+        if (!btn || !fileEl) return;
 
-        var hintDefault = hint ? hint.textContent : "";
-        var player = null;
-        var playerReady = false;
-        var pendingPlay = false;
+        fileEl.src = resolveMediaHref(MEDIA);
+        fileEl.volume = 0.92;
 
-        var YT_W = 240;
-
-        function playerHeightPx() {
-          return Math.round((YT_W * 9) / 16);
-        }
-
-        function setPlayingUi(playing) {
-          btn.textContent = playing ? "Pause" : "Play";
-          btn.setAttribute("aria-pressed", playing ? "true" : "false");
-        }
-
-        function onPlayerStateChange(e) {
-          if (!window.YT) return;
-          if (
-            e.data === YT.PlayerState.PLAYING ||
-            e.data === YT.PlayerState.BUFFERING
-          )
-            setPlayingUi(true);
-          else if (
-            e.data === YT.PlayerState.PAUSED ||
-            e.data === YT.PlayerState.ENDED ||
-            e.data === YT.PlayerState.CUED
-          )
-            setPlayingUi(false);
-        }
-
-        function createPlayer() {
-          player = new YT.Player("yt-player-host", {
-            videoId: VIDEO_ID,
-            width: YT_W,
-            height: playerHeightPx(),
-            playerVars: {
-              playsinline: 1,
-              rel: 0,
-              modestbranding: 1,
-              controls: 0,
-              fs: 0,
-            },
-            events: {
-              onReady: function () {
-                playerReady = true;
-                if (hint) hint.textContent = hintDefault;
-                if (pendingPlay && player && player.playVideo) {
-                  pendingPlay = false;
-                  player.playVideo();
-                }
-              },
-              onError: function (ev) {
-                if (hint)
-                  hint.textContent =
-                    "This video may not allow embedding (code " +
-                    (ev.data != null ? ev.data : "?") +
-                    "). Use Open on YouTube.";
-                pendingPlay = false;
-                setPlayingUi(false);
-              },
-              onStateChange: onPlayerStateChange,
-            },
-          });
-        }
-
-        window.onYouTubeIframeAPIReady = function () {
-          createPlayer();
-        };
-
-        if (window.YT && window.YT.Player) createPlayer();
-        else {
-          var tag = document.createElement("script");
-          tag.async = true;
-          tag.src = "https://www.youtube.com/iframe_api";
-          document.head.appendChild(tag);
-        }
+        var hintDefault =
+          hint && hint.textContent
+            ? hint.textContent.trim()
+            : "Tap Play for audio — works on HTTPS Pages; local file:// may block WAV.";
 
         btn.addEventListener("click", function () {
-          if (!window.YT || !YT.Player || !player || !playerReady) {
-            pendingPlay = true;
-            if (hint) hint.textContent = "Loading player\u2026";
-            return;
-          }
-          try {
-            var st = player.getPlayerState();
-            if (st === YT.PlayerState.PLAYING) {
-              player.pauseVideo();
-              setPlayingUi(false);
-            } else {
-              player.playVideo();
-              setPlayingUi(true);
+          if (fileEl.paused) {
+            if (hint) hint.textContent = hintDefault;
+            var pr = fileEl.play();
+            if (pr && pr.catch) {
+              pr.catch(function (err) {
+                if (hint)
+                  hint.textContent =
+                    "Playback failed: " +
+                    (err && err.message ? err.message : "unknown") +
+                    " (HTTPS / mute / autoplay?).";
+                btn.textContent = "Play";
+                btn.setAttribute("aria-pressed", "false");
+              });
             }
-          } catch (err) {
-            if (hint)
-              hint.textContent =
-                "Control failed; try Open on YouTube. " +
-                (err && err.message ? err.message : "");
-            pendingPlay = false;
-            setPlayingUi(false);
+            btn.textContent = "Pause";
+            btn.setAttribute("aria-pressed", "true");
+          } else {
+            fileEl.pause();
+            if (hint) hint.textContent = hintDefault;
+            btn.textContent = "Play";
+            btn.setAttribute("aria-pressed", "false");
           }
         });
 
-        window.addEventListener("beforeunload", function () {
-          try {
-            if (player && player.destroy) player.destroy();
-          } catch (e2) {}
+        fileEl.addEventListener("ended", function () {
+          btn.textContent = "Play";
+          btn.setAttribute("aria-pressed", "false");
         });
       })();
       </script>
     </section>
 
     <p class="disclosure-below-card">
-      Music streams from an embedded YouTube player here (nothing is stored on this site); the clip is visually hidden so you only hear audio. Utterances guestbook requires GitHub to post.
+      Site music file: <code>media/modern-hardrock-a7vz.wav</code> (heavy guitar remaster preset, 48&nbsp;kHz). Regenerate via <code>python scripts/hardrock_master_wav.py</code>. Utterances guestbook requires GitHub to post.
     </p>
 
     <footer>
