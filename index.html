@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  Layout from Wayback: https://web.archive.org/web/20081013110222/http://www.ratubaworld.com/
+  Comments: Utterances (https://utteranc.es) — set REPO in script; public repo + GitHub App required.
+-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ratuba World — 2008 replica + Utterances (GitHub) comments</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Verdana, Geneva, sans-serif;
+      font-size: 12px;
+      background: #486aa3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2389a8d8'/%3E%3Cstop offset='0.35' stop-color='%235a78b5'/%3E%3Cstop offset='1' stop-color='%233d5a8a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='100' height='400'/%3E%3C/svg%3E") repeat-x top;
+      color: #000;
+    }
+    a.link1 {
+      font-size: 11px;
+      color: Navy;
+      text-decoration: none;
+    }
+    a.link1:hover { color: White; }
+    .outer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 10px 40px;
+    }
+    /* —— Framed Flash header (724×170) —— */
+    .flash-frame {
+      display: table;
+      margin: 0 auto;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+    .flash-frame td { padding: 0; vertical-align: middle; font-size: 1px; }
+    .c25 { width: 25px; height: 25px; background: linear-gradient(135deg, #9ab6e0, #4a6494); border: 1px solid #2a4060; }
+    .top-top { height: 25px; width: 724px; background: linear-gradient(180deg, #a8c0e8, #6a86b8); border-top: 1px solid #d0ddf5; border-bottom: 1px solid #3a5080; }
+    .top-left, .top-right { width: 25px; background: linear-gradient(90deg, #7a94c0, #4a6088); }
+    .top-left { border-left: 1px solid #b8c8e8; }
+    .top-right { border-right: 1px solid #2a4060; }
+    .flash-cell { width: 724px; height: 170px; background: linear-gradient(180deg, #2c4070 0%, #1a2848 40%, #203560 100%); border-left: 1px solid #5a78a8; border-right: 1px solid #1a2038; text-align: center; vertical-align: middle; }
+    .flash-placeholder {
+      display: inline-block;
+      width: 92%;
+      height: 150px;
+      margin: 10px auto;
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.06) 6px,
+        transparent 6px,
+        transparent 12px
+      );
+      border: 2px ridge rgba(180, 200, 255, 0.35);
+      color: #bde;
+      font-size: 11px;
+      line-height: 1.4;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+    .top-bot { height: 23px; width: 724px; background: linear-gradient(180deg, #6a86b8, #4a6090); border-top: 1px solid #8aa4d0; }
+
+    /* 728×90 ad strip colors from archived AdSense block */
+    .ad728 {
+      margin: 6px auto 0;
+      width: 728px;
+      height: 90px;
+      max-width: 100%;
+      border: 2px solid #2d5893;
+      background: #99aacc;
+      color: #003366;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    /* WELCOME bar */
+    .welcome-wrap {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .welcome-bar {
+      min-width: 280px;
+      max-width: 600px;
+      flex: 1;
+      height: 36px;
+      background: linear-gradient(180deg, #8898a8 0%, #5a6880 45%, #4a5870 100%);
+      border-left: 1px solid #a8b8c8;
+      border-right: 1px solid #3a4860;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: White;
+      font-size: 12px;
+      font-weight: bold;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
+    }
+    .welcome-cap { width: 72px; height: 36px; background: linear-gradient(135deg, #788898, #505c70); flex-shrink: 0; border-bottom: 2px solid #3a4460; }
+    .welcome-cap:first-of-type { border-radius: 0 0 0 4px; margin-right: 2px; }
+    .welcome-cap:last-of-type { border-radius: 0 0 4px 0; margin-left: 2px; }
+
+    /* Main grid: left gutter / blue column / right rail */
+    .main-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 0;
+      margin-top: 8px;
+    }
+    .col-left-ads {
+      width: 110px;
+      min-height: 120px;
+      flex-shrink: 0;
+    }
+    .col-left-ads .mini {
+      font-size: 9px;
+      color: #224;
+      text-align: center;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px dashed #468;
+    }
+    .gutter {
+      width: 18px;
+      flex-shrink: 0;
+      background: repeating-linear-gradient(
+        180deg,
+        #2d4a8a 0px,
+        #2d4a8a 2px,
+        #253c78 2px,
+        #253c78 4px
+      );
+      border-left: 1px solid #1a2a58;
+      border-right: 1px solid #4a68a8;
+      min-height: 200px;
+    }
+    .col-main {
+      width: 711px;
+      max-width: 100%;
+      flex: 1 1 711px;
+      background: #3366cc;
+      box-sizing: border-box;
+      border: 1px solid #254a93;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    .toolbar {
+      padding: 6px 10px;
+      border-bottom: 1px solid #254080;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent);
+    }
+    .toolbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .stat-pill { font-size: 10px; color: rgba(255, 255, 255, 0.85); }
+    .nav-btns { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; flex: 1; }
+    .nav-btns a {
+      display: inline-block;
+      padding: 3px 12px 4px;
+      font-size: 11px;
+      font-weight: bold;
+      color: #024;
+      text-decoration: none;
+      border: 1px solid #cde;
+      border-radius: 3px;
+      background: linear-gradient(180deg, #eef4ff 0%, #c8d6ee 45%, #a8bdd8 100%);
+      box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+    .nav-btns a:hover {
+      background: linear-gradient(180deg, #ffffee 0%, #dde8ff 50%, #b8cce8 100%);
+      color: Navy;
+    }
+    .inner-pad {
+      padding: 12px 16px 28px;
+    }
+
+    /* News blocks */
+    .news-top {
+      height: 23px;
+      background: linear-gradient(90deg, #a8bcd8 0%, #d8e4f8 30%, #a8bcd8 100%);
+      border: 1px solid #556;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+    }
+    .news-md {
+      background: linear-gradient(180deg, #e8ecf4 0%, #dce4f4 35%, #d0dae8 100%);
+      border: 1px solid #556;
+      border-top: none;
+      padding: 12px 35px 10px;
+      font-size: 11px;
+      line-height: 1.45;
+      color: #111;
+      box-sizing: border-box;
+    }
+    .news-md a { color: Blue; text-decoration: underline; }
+    .news-md a:hover { color: Maroon; text-decoration: none; }
+    .news-bottom {
+      height: 16px;
+      background: linear-gradient(180deg, #b8c8e0 0%, #8898b0 100%);
+      border: 1px solid #556;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+    }
+    .news-head { margin-bottom: 6px; }
+    .avatar {
+      float: left;
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+      background: linear-gradient(135deg, #b8860b, #4a3820);
+      border: 1px solid #000;
+    }
+    .news-div { border-bottom: 1px solid #000; margin: 6px 0 8px; clear: both; }
+    .news-actions { text-align: right; margin-top: 8px; font-size: 11px; }
+    .news-actions a { color: Navy; }
+    hr.sep { width: 75%; border: none; border-top: 1px solid rgba(255, 255, 255, 0.25); margin: 18px auto; }
+
+    .read-all {
+      text-align: center;
+      margin: 10px 0 6px;
+    }
+    .read-all a {
+      font-size: 14px;
+      font-weight: bold;
+      color: White;
+      text-decoration: underline;
+    }
+    .read-all a:hover { text-decoration: none; }
+
+    /* Right sidebar */
+    .col-right {
+      width: 180px;
+      flex-shrink: 0;
+      padding-left: 10px;
+      box-sizing: border-box;
+    }
+    .tower {
+      height: 200px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #33446620,
+        #33446620 8px,
+        #99aacccc 8px,
+        #99aacccc 16px
+      );
+      border: 2px solid #2d5893;
+      font-size: 10px;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .newsletter {
+      margin-top: 12px;
+      width: 141px;
+      border: 1px solid #345;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #c8d4e8;
+    }
+    .newsletter .top {
+      height: 28px;
+      background: linear-gradient(180deg, #6078a0, #405878);
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 -1px 0 #0004;
+    }
+    .newsletter .mid {
+      height: 48px;
+      background: linear-gradient(180deg, #8898b0, #7080a0);
+    }
+    .newsletter .form {
+      padding: 8px 6px 10px;
+      font-size: 10px;
+      text-align: center;
+      background: #b0c0d8;
+    }
+    .newsletter input[type="text"] {
+      width: 118px;
+      margin-top: 4px;
+      font-size: 10px;
+      border: 1px solid #000;
+      background: #fff;
+    }
+    .newsletter .sub {
+      margin-top: 8px;
+      width: 100%;
+      height: 36px;
+      background: linear-gradient(180deg, #7088b0, #506888);
+      border: none;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      cursor: default;
+      border-top: 1px solid #8aa4c8;
+    }
+
+    /* Footer */
+    .footer-table {
+      margin-top: 18px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      border-collapse: collapse;
+    }
+    .footer-md {
+      background: repeating-linear-gradient(90deg, #8898b0 0 2px, #a8b8d0 2px 4px);
+      background-size: 4px 100%;
+      font-size: 11px;
+      color: Navy;
+      text-align: center;
+      padding: 42px 20px 20px;
+      vertical-align: top;
+      border: 1px solid #556;
+      border-radius: 0 0 6px 6px;
+      box-sizing: border-box;
+    }
+    .footer-md strong a.link1:hover { color: Navy; text-decoration: underline; }
+    .note {
+      text-align: center;
+      font-size: 10px;
+      color: rgba(0, 0, 0, 0.55);
+      margin-top: 12px;
+    }
+    @media (max-width: 900px) {
+      .welcome-wrap .welcome-cap { display: none; }
+      .col-left-ads { width: 100%; order: 3; }
+      .col-right { width: 100%; padding-left: 0; }
+      .gutter { display: none; }
+    }
+
+    /* —— Utterances / guestbook band (full width under main grid) —— */
+    .comments-band {
+      max-width: 1100px;
+      margin: 22px auto 0;
+      padding: 0 10px;
+    }
+    #utterances-comments {
+      margin-top: 14px;
+      min-height: 140px;
+    }
+    .comments-config-msg {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid #885;
+      background: #ffc;
+      font-size: 11px;
+      line-height: 1.45;
+      color: #222;
+    }
+    .comments-config-msg code { font-size: 10px; word-break: break-all; }
+    .comments-config-msg a { color: #00c; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="outer">
+    <table class="flash-frame" role="presentation">
+      <tr>
+        <td class="c25"></td>
+        <td class="top-top"></td>
+        <td class="c25"></td>
+      </tr>
+      <tr>
+        <td class="top-left">&nbsp;</td>
+        <td class="flash-cell">
+          <div class="flash-placeholder">
+            Embedded Flash banner area<br />
+            (~724×170, <code>top_bar_2.swf</code> in 2008)
+          </div>
+        </td>
+        <td class="top-right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="c25" style="height:23px"></td>
+        <td class="top-bot"></td>
+        <td class="c25" style="height:23px"></td>
+      </tr>
+    </table>
+
+    <div class="ad728">728 × 90 “AdSense-style” banner · border #2D5893 · fill #99AACC (from archived markup)</div>
+
+    <div class="welcome-wrap">
+      <div class="welcome-cap"></div>
+      <div class="welcome-cap"></div>
+      <div class="welcome-bar">WELCOME TO RATUBA WORLD</div>
+      <div class="welcome-cap"></div>
+      <div class="welcome-cap"></div>
+    </div>
+
+    <div class="main-grid">
+      <div class="col-left-ads">
+        <div class="mini">Small ad slot<br />110×32 class area</div>
+      </div>
+      <div class="gutter" aria-hidden="true"></div>
+
+      <div class="col-main">
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <span class="stat-pill">[hits counter]</span>
+            <div class="nav-btns">
+              <a href="#">Home</a>
+              <a href="#">Login</a>
+              <a href="#">Sign up</a>
+              <a href="#">Games</a>
+            </div>
+            <a class="link1" href="#">Sitemap</a>
+          </div>
+        </div>
+        <div class="inner-pad">
+          <!-- News excerpt inspired by archived front page -->
+          <div class="news-top"></div>
+          <div class="news-md">
+            <div class="news-head">
+              <strong style="font-size:12px;">Last semester of College</strong><br />
+              <span style="font-size:10px;">
+                posted by <strong><em><a href="#">Grant Cerulo</a></em></strong>
+                &nbsp;|&nbsp; <a href="#">http://www.ratubaworld.com</a><br />
+                <em>Wednesday, January 30, 2008 @ 17:26:32</em>
+              </span>
+            </div>
+            <div class="news-div"></div>
+            <p>I am currently on my third day of my last semester of college here at Umass Amherst.</p>
+            <p>We’re in stages of developing a new flash game called, <strong>“Monster Pop,”</strong> which I hope will be done soon because I need money! ARGH!</p>
+            <p>I’m also working on my thesis movie, <strong>“Depot”</strong>, updated on my facebook group.</p>
+            <p>We’ve passed the <strong>1,200,000</strong> hits mark. Weee hooo — gotta love those AdSense checks.</p>
+            <div class="news-div" style="border-top:1px solid #000;border-bottom:none;margin-top:12px;"></div>
+            <div class="news-actions">
+              <a href="#">Comments (3)</a>&nbsp;
+              <a href="#">Post Comment</a>
+            </div>
+          </div>
+          <div class="news-bottom"></div>
+
+          <hr class="sep" />
+
+          <div class="news-top"></div>
+          <div class="news-md">
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:4px;"><tr>
+              <td valign="top" width="60"><a href="#"><div class="avatar" title="avatar slot"></div></a></td>
+              <td>
+                <strong style="font-size:12px;">About the forums…</strong><br />
+                <span style="font-size:10px;">
+                  posted by <strong><em><a href="#">Gold Leader</a></em></strong><br />
+                  <em>Saturday, November 10, 2007 @ 21:00:21</em>
+                </span>
+              </td>
+            </tr></table>
+            <div class="news-div"></div>
+            <p>We lack adequate measures to stop the influx of bots, so forum registration requires admin activation — email Radis / Gold Leader after signing up.</p>
+            <div class="news-div" style="border-top:1px solid #000;border-bottom:none;"></div>
+            <div class="news-actions">
+              <a href="#">Comments (2)</a>&nbsp;
+              <a href="#">Post Comment</a>
+            </div>
+          </div>
+          <div class="news-bottom"></div>
+
+          <div class="read-all"><a href="#">Read all News</a></div>
+        </div>
+      </div>
+
+      <div class="gutter" aria-hidden="true"></div>
+
+      <div class="col-right">
+        <div class="tower">120 × 600 tower ad slot<br /><span style="font-size:9px">(graphic chrome was on the archived page)</span></div>
+        <div class="newsletter">
+          <div class="top">Newsletter</div>
+          <div class="mid"></div>
+          <div class="form">
+            Email:
+            <input type="text" value="Enter your E-mail" readonly />
+            <button type="button" class="sub">Subscribe (mock)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GitHub-backed comments: Utterances (free). Requires public repo + GitHub App install; see yellow box until REPO is set. -->
+    <div class="comments-band">
+      <div class="news-top"></div>
+      <div class="news-md">
+        <strong style="font-size:12px;">Site guestbook / comments</strong><br />
+        <span style="font-size:10px;">
+          Powered by <a href="https://utteranc.es" target="_blank" rel="noopener">Utterances</a> (GitHub Issues, free).
+          Commenting <em>requires a GitHub sign-in</em>, which blocks almost all bot spam. You moderate from the repo’s <strong>Issues</strong> tab.
+        </span>
+        <div id="utterances-comments" aria-live="polite"></div>
+        <div id="comments-config-msg" class="comments-config-msg">
+          <strong>One-time setup (~5 min):</strong>
+          <ol style="margin:8px 0 0 18px;padding:0;">
+            <li>Create a <strong>public</strong> GitHub repository (Issues enabled), e.g. <code>yourname/ratubaworld-comments</code>.</li>
+            <li>Install the Utterances app on that repo: <a href="https://github.com/apps/utterances" target="_blank" rel="noopener">github.com/apps/utterances</a>.</li>
+            <li>In this file, set <code>REPO</code> in the script below to <code>owner/repo</code>, then publish the site (e.g. <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>).</li>
+            <li>Serve over <strong>https</strong> — opening from <code>file://</code> usually breaks the widget.</li>
+          </ol>
+          <p style="margin:10px 0 0;">
+            Want <strong>Discussions</strong> instead of Issues? Use <a href="https://giscus.app" target="_blank" rel="noopener">giscus.app</a> (also free, similar GitHub login wall).
+          </p>
+        </div>
+        <script>
+        (function () {
+          var REPO = "YOUR_GITHUB_USERNAME/ratubaworld-comments";
+          var mount = document.getElementById("utterances-comments");
+          var cfg = document.getElementById("comments-config-msg");
+          function repoOk(r) {
+            if (!r || typeof r !== "string") return false;
+            if (/YOUR_GITHUB_USERNAME/i.test(r) || /REPLACE/i.test(r)) return false;
+            var parts = r.split("/");
+            if (parts.length !== 2) return false;
+            if (!parts[0].trim() || !parts[1].trim()) return false;
+            if (/\/\s*$/.test(r)) return false;
+            return true;
+          }
+          if (!repoOk(REPO) || !mount) return;
+          cfg.style.display = "none";
+          var s = document.createElement("script");
+          s.src = "https://utteranc.es/client.js";
+          s.async = true;
+          s.setAttribute("repo", REPO);
+          s.setAttribute("issue-term", "pathname");
+          s.setAttribute("theme", "github-light");
+          s.setAttribute("crossorigin", "anonymous");
+          mount.appendChild(s);
+        })();
+        </script>
+      </div>
+      <div class="news-bottom"></div>
+    </div>
+
+    <table class="footer-table" role="presentation" width="100%">
+      <tr>
+        <td class="footer-md" colspan="3">
+          <strong>
+            All material is © 2006 <a href="#" class="link1">www.ratubaworld.com</a>, Grant Cerulo &amp; affiliates<br />
+            Ratuba<sup style="font-size:7px">TM</sup> Games and Ratuba<sup style="font-size:7px">TM</sup> Productions are divisions of Ratuba<sup style="font-size:7px">TM</sup> World
+          </strong>
+        </td>
+      </tr>
+    </table>
+
+    <p class="note">
+      Layout from Wayback <strong>20081013110222</strong> + archived <code>style.css</code>.
+      Comments use Utterances once you set <code>REPO</code> and host on <strong>https</strong>.
+    </p>
+  </div>
+</body>
+</html>
