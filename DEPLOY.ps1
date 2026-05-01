@@ -1,4 +1,4 @@
-# Deploy Ratuba Pages + comments repo: one paste of a GitHub token (ASCII-only script for PowerShell 5/cmd).
+# Deploy Ratuba Pages + comments repo. Token: $env:GITHUB_TOKEN, or saved file under LocalAppData, or one-time paste.
 #
 # Creates public repos ratubaworld-pages and ratubaworld-comments if missing,
 # rewrites REPO in index.html, pushes main, enables GitHub Pages (legacy).
@@ -30,23 +30,50 @@ if (-not $Git) {
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location -LiteralPath $Root
 
+$TokenDir  = Join-Path $env:LOCALAPPDATA 'ratubaworld-pages-deploy'
+$TokenFile = Join-Path $TokenDir 'github_token.txt'
+
 function Get-GitHubTokenFromUser {
   if ($env:GITHUB_TOKEN -and $env:GITHUB_TOKEN.Trim().Length -gt 10) {
+    Write-Host 'Using GITHUB_TOKEN from environment.' -ForegroundColor DarkGray
     return $env:GITHUB_TOKEN.Trim()
+  }
+  if (Test-Path -LiteralPath $TokenFile) {
+    $cached = [System.IO.File]::ReadAllText($TokenFile).Trim()
+    if ($cached.Length -gt 10) {
+      Write-Host ('Using saved token: ' + $TokenFile) -ForegroundColor DarkGray
+      return $cached
+    }
   }
   Write-Host ''
   Write-Host 'Create a token:' -ForegroundColor Cyan
   Write-Host '  https://github.com/settings/tokens/new' -ForegroundColor Cyan
   Write-Host '  Classic: enable scope repo (full).' -ForegroundColor Gray
   Write-Host ''
+  Write-Host ('Or set user env GITHUB_TOKEN, or save to: ' + $TokenFile) -ForegroundColor Gray
+  Write-Host ''
   $sec = Read-Host 'Paste token here' -AsSecureString
   $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
   try {
-    return [Runtime.InteropServices.Marshal]::PtrToStringUni($bstr)
+    $plain = [Runtime.InteropServices.Marshal]::PtrToStringUni($bstr)
   }
   finally {
     [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
   }
+  if ($null -eq $plain) { return $null }
+  $plain = $plain.Trim()
+  if ([string]::IsNullOrWhiteSpace($plain)) { return $null }
+  $save = Read-Host 'Save token on this PC for future deploys? (y/N)'
+  if ($save -match '^[Yy]') {
+    New-Item -ItemType Directory -Force -Path $TokenDir | Out-Null
+    [System.IO.File]::WriteAllText($TokenFile, $plain, [System.Text.UTF8Encoding]::new($false))
+    try {
+      & icacls.exe $TokenFile /inheritance:r /grant:r ($env:USERNAME + ':(R,W)') | Out-Null
+    }
+    catch { }
+    Write-Host ('Saved. To remove later, delete: ' + $TokenFile) -ForegroundColor Green
+  }
+  return $plain
 }
 
 $token = Get-GitHubTokenFromUser
@@ -128,6 +155,15 @@ else {
 $st = (& $Git -C $Root status --porcelain) -join "`n"
 if ($st.Trim().Length -gt 0) {
   & $Git -C $Root add index.html
+  if (Test-Path (Join-Path $Root 'classic-2008.html')) {
+    & $Git -C $Root add classic-2008.html
+  }
+  if (Test-Path (Join-Path $Root 'media')) {
+    & $Git -C $Root add media
+  }
+  if (Test-Path (Join-Path $Root 'preview-clean-mobile.html')) {
+    & $Git -C $Root add preview-clean-mobile.html
+  }
   $savedEap = $ErrorActionPreference
   $ErrorActionPreference = 'Continue'
   & $Git -C $Root commit -m "Configure Utterances: ${userLogin}/${IssuesRepo}" 2>&1 | Out-Null

@@ -1,9 +1,20 @@
-1) Cusdis guestbook (no GitHub required for posters)
-   - Open https://cusdis.com/dashboard and create your site / copy App ID
-   - In index.html, set data-app-id on div#cusdis_thread (replace YOUR_CUSDIS_APP_ID)
-   - Approve incoming comments there (spam is manual)
+Home: index.html (mobile-friendly). Classic Wayback-style chrome: classic-2008.html.
+Chiptune file: media/ratuba-chiptune.wav (regenerate: python scripts/make_ratuba_chiptune_wav.py).
+preview-clean-mobile.html redirects to index.html.
 
-2) Site deploy (same as before): double-click DEPLOY.cmd OR push to GitHub.
-   Uses a PAT: https://github.com/settings/tokens/new (classic, repo scope)
+1) Utterances guestbook (GitHub login for posters)
+   - index.html has: <script>var REPO = "YOUR_GITHUB_USERNAME/ratubaworld-comments";</script>
+     (or already set to your user/repo). DEPLOY.ps1 rewrites that line if you use the placeholder.
+   - After first deploy, open the Utterances installer (script opens it) and grant access to your
+     ratubaworld-comments repo: https://github.com/apps/utterances/installations/new
 
-Note: Deploy script may still create ratubaworld-comments for legacy Utterances; you can ignore that repo once you fully switch to Cusdis.
+2) Site deploy: double-click DEPLOY.cmd (or run DEPLOY.ps1).
+   GitHub token is read in this order:
+   - User environment variable GITHUB_TOKEN (optional)
+   - Saved file: %LOCALAPPDATA%\ratubaworld-pages-deploy\github_token.txt
+     (first time you paste a token, answer Y to save it; delete that file to clear)
+   - Otherwise you are prompted once per run.
+   Create a PAT: https://github.com/settings/tokens/new (classic, repo scope).
+
+3) Revoke the token at GitHub if this machine is lost or the file is exposed; then delete the file
+   and sign in again on the next deploy.
