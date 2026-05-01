@@ -118,7 +118,7 @@
   <div class="wrap">
     <header>
       <h1>welcome to ratubaworld</h1>
-      <p class="subtle">Lightweight preview: tap play for chip audio (instant, no bundle). Guestbook uses Cusdis (no poster login once App ID set). Works best after publish on HTTPS.</p>
+      <p class="subtle">Lightweight preview: tap play for chip audio (instant, no bundle). Guestbook uses Utterances (GitHub login for posters). Works best after publish on HTTPS.</p>
       <button type="button" class="pill" id="chip-toggle" aria-pressed="false">Play chip loop</button>
       <p class="hint">iPhone: sound starts after you tap (browser rule). Pause anytime.</p>
 
@@ -129,37 +129,41 @@
     <section class="card">
       <h2>guestbook</h2>
       <p style="font-size:0.88rem;color:#62788f;margin:-4px 0 10px;line-height:1.4;">
-        No GitHub login for readers. You approve posts in your <a href="https://cusdis.com/dashboard" target="_blank" rel="noopener">Cusdis dashboard</a> (spam is manual).
+        Utterances maps this page to a GitHub issue thread in <strong>ratubaworld-comments</strong>. Posters sign in with GitHub.
       </p>
-      <div
-        id="cusdis_thread"
-        data-host="https://cusdis.com"
-        data-app-id="YOUR_CUSDIS_APP_ID"
-        data-page-id="ratubaworld-guestbook-preview"
-        data-page-url="https://ratubaworld.github.io/ratubaworld-pages/preview-clean-mobile.html"
-      ></div>
-      <div id="cusdis-setup-msg" style="margin-top:10px;font-size:0.82rem;color:#92400e;display:none;">
-        Paste your App ID from <a href="https://cusdis.com/dashboard">cusdis.com/dashboard</a> into <code>data-app-id</code>.
+      <script>var REPO = "ratubaworld/ratubaworld-comments";</script>
+      <div id="utterances-comments"></div>
+      <div id="utterances-setup-msg" style="margin-top:10px;font-size:0.82rem;color:#92400e;display:none;">
+        Set <code>var REPO</code> to <code>YOUR_USERNAME/ratubaworld-comments</code> and install
+        <a href="https://github.com/apps/utterances/installations/new" target="_blank" rel="noopener">Utterances</a> on that repo.
       </div>
       <script>
       (function () {
-        var t = document.getElementById('cusdis_thread');
-        var w = document.getElementById('cusdis-setup-msg');
+        var w = document.getElementById('utterances-setup-msg');
+        if (!w || typeof REPO !== 'string') return;
         if (/^file:/i.test(location.href)) {
-          if (w) {
-            w.style.display = 'block';
-            w.textContent = 'Open via GitHub Pages (https) so the Cusdis iframe can load.';
-          }
+          w.style.display = 'block';
+          w.insertAdjacentHTML('afterbegin', '<span><strong>Local file:</strong> use GitHub Pages (https) for the iframe. </span>');
           return;
         }
-        if (t && w && (t.getAttribute('data-app-id') || '').indexOf('YOUR_CUSDIS_APP_ID') !== -1)
-          w.style.display = 'block';
+        if (REPO.indexOf('YOUR_GITHUB_USERNAME') !== -1) w.style.display = 'block';
+      })();
+      (function () {
+        var mount = document.getElementById('utterances-comments');
+        if (!mount || typeof REPO !== 'string') return;
+        var el = document.createElement('script');
+        el.src = 'https://utteranc.es/client.js';
+        el.async = true;
+        el.crossOrigin = 'anonymous';
+        el.setAttribute('repo', REPO);
+        el.setAttribute('issue-term', 'pathname');
+        el.setAttribute('label', 'guestbook-preview');
+        el.setAttribute('theme', 'github-light');
+        mount.appendChild(el);
       })();
       </script>
-      <script defer src="https://cusdis.com/js/cusdis.es.js"></script>
-      /*
-        Chiptune: Web Audio arpeggio (no file download). iOS needs a tap before sound.
-      */
+      <script>
+      /* Chiptune: Web Audio arpeggio (no file download). iOS needs a tap before sound. */
       (function () {
         var btn = document.getElementById("chip-toggle");
         var fileEl = document.getElementById("file-loop");
