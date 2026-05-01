@@ -1,25 +1,10 @@
-Ratuba World static site — go live (pick ONE path)
+ONE STEP FOR YOU:
 
-A) GitHub Pages (free https, best match for Utterances)
-1. Create a NEW empty public repo on GitHub, e.g. ratubaworld-pages (no README).
-2. In this folder, run (replace YOURUSER and REPO if different):
+1) Double‑click DEPLOY.cmd (or PowerShell — run .\DEPLOY.ps1 from this folder).
 
-   git remote add origin https://github.com/YOURUSER/ratubaworld-pages.git
-   git push -u origin main
+2) When asked: paste one GitHub personal access token.
+   Classic token with "repo" scope: https://github.com/settings/tokens/new
 
-   If "git" is not found, use "Git Bash" from your Start menu, or run:
-   "C:\Program Files\Git\cmd\git.exe" remote add origin ...
-   "C:\Program Files\Git\cmd\git.exe" push -u origin main
+Everything else — new repos if needed, index.html REPO rewrite, git push, Pages on — runs from the script.
 
-3. On GitHub: Settings → Pages → Build and deployment → Source: branch "main", folder "/ (root)" → Save.
-4. After 1–3 minutes, open:
-   https://YOURUSER.github.io/ratubaworld-pages/
-
-5. Comments: edit index.html, set var REPO = "YOURUSER/some-public-repo", install Utterances app on that repo, then push again.
-
-B) Netlify Drop (no Git required)
-1. Zip this folder (index.html + .nojekyll).
-2. Open https://app.netlify.com/drop and drag the zip.
-3. You get a random https URL; optional: rename site in Netlify dashboard.
-
-After it is live, point ratubaworld.com to GitHub Pages or Netlify using your registrar’s DNS (CNAME / A records per their docs).
+When the browser opens, install Utterances on YOUR "ratubaworld-comments" repo (GitHub forces this approval once).
