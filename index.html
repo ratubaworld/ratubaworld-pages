@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+  Layout homage: Wayback snapshot 20081013110222 (www.ratubaworld.com).
+  Comments: Utterances (GitHub Issues). Repo set in script below.
+-->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ratuba World</title>
+  <title>Ratuba World - 2008 layout + GitHub guestbook</title>
   <style>
     body {
       margin: 0;
@@ -24,7 +28,7 @@
       margin: 0 auto;
       padding: 12px 10px 40px;
     }
-    /* Framed banner */
+    /* Flash frame */
     .flash-frame {
       display: table;
       margin: 0 auto;
@@ -72,9 +76,10 @@
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
+      text-align: center;
+      padding: 8px;
     }
 
-    /* WELCOME bar */
     .welcome-wrap {
       margin-top: 6px;
       display: flex;
@@ -101,7 +106,37 @@
     .welcome-cap:first-of-type { border-radius: 0 0 0 4px; margin-right: 2px; }
     .welcome-cap:last-of-type { border-radius: 0 0 4px 0; margin-left: 2px; }
 
-    /* Main grid */
+    /* Guestbook first */
+    #guestbook-anchor { scroll-margin-top: 8px; }
+    .comments-band {
+      max-width: 1100px;
+      margin: 14px auto 0;
+      padding: 0 10px;
+    }
+    .comments-band .news-md {
+      padding: 18px 28px 16px;
+    }
+    #utterances-comments {
+      margin-top: 16px;
+      min-height: 320px;
+      background: rgba(255, 255, 255, 0.35);
+      border: 1px solid #889;
+      border-radius: 4px;
+      padding: 12px;
+      box-sizing: border-box;
+    }
+    .comments-config-msg {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid #885;
+      background: #ffc;
+      font-size: 11px;
+      line-height: 1.45;
+      color: #222;
+    }
+    .comments-config-msg code { font-size: 10px; word-break: break-all; }
+    .comments-config-msg a { color: #00c; font-weight: bold; }
+
     .main-grid {
       display: flex;
       flex-wrap: wrap;
@@ -178,10 +213,14 @@
       color: Navy;
     }
     .inner-pad {
-      padding: 12px 16px 28px;
+      padding: 16px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 11px;
+      text-align: center;
+      min-height: 72px;
     }
 
-    /* News blocks */
+    /* News chrome (reuse for panels) */
     .news-top {
       height: 23px;
       background: linear-gradient(90deg, #a8bcd8 0%, #d8e4f8 30%, #a8bcd8 100%);
@@ -208,33 +247,7 @@
       border-top: none;
       border-radius: 0 0 4px 4px;
     }
-    .news-head { margin-bottom: 6px; }
-    .avatar {
-      float: left;
-      width: 50px;
-      height: 50px;
-      margin-right: 10px;
-      background: linear-gradient(135deg, #b8860b, #4a3820);
-      border: 1px solid #000;
-    }
-    .news-div { border-bottom: 1px solid #000; margin: 6px 0 8px; clear: both; }
-    .news-actions { text-align: right; margin-top: 8px; font-size: 11px; }
-    .news-actions a { color: Navy; }
-    hr.sep { width: 75%; border: none; border-top: 1px solid rgba(255, 255, 255, 0.25); margin: 18px auto; }
 
-    .read-all {
-      text-align: center;
-      margin: 10px 0 6px;
-    }
-    .read-all a {
-      font-size: 14px;
-      font-weight: bold;
-      color: White;
-      text-decoration: underline;
-    }
-    .read-all a:hover { text-decoration: none; }
-
-    /* Right sidebar */
     .col-right {
       width: 180px;
       flex-shrink: 0;
@@ -309,7 +322,6 @@
       border-top: 1px solid #8aa4c8;
     }
 
-    /* Footer */
     .footer-table {
       margin-top: 18px;
       max-width: 1100px;
@@ -329,34 +341,19 @@
       border-radius: 0 0 6px 6px;
       box-sizing: border-box;
     }
+    .footer-md strong a.link1:hover { color: Navy; text-decoration: underline; }
+    .note {
+      text-align: center;
+      font-size: 10px;
+      color: rgba(0, 0, 0, 0.55);
+      margin-top: 12px;
+    }
+    @media (max-width: 900px) {
       .welcome-wrap .welcome-cap { display: none; }
       .col-left-ads { width: 100%; order: 3; }
       .col-right { width: 100%; padding-left: 0; }
       .gutter { display: none; }
     }
-
-    /* Guestbook / comments band */
-    .comments-band {
-      max-width: 1100px;
-      margin: 22px auto 0;
-      padding: 0 10px;
-    }
-    #utterances-comments {
-      margin-top: 14px;
-      min-height: 140px;
-    }
-    .comments-config-msg {
-      display: none;
-      margin-top: 14px;
-      padding: 12px 14px;
-      border: 1px solid #885;
-      background: #ffc;
-      font-size: 11px;
-      line-height: 1.45;
-      color: #222;
-    }
-    .comments-config-msg code { font-size: 10px; word-break: break-all; }
-    .comments-config-msg a { color: #00c; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -370,7 +367,10 @@
       <tr>
         <td class="top-left">&nbsp;</td>
         <td class="flash-cell">
-          <div class="flash-placeholder">Ratuba World</div>
+          <div class="flash-placeholder">
+            Embedded Flash banner area<br />
+            (~724x170, top_bar_2.swf in 2008)
+          </div>
         </td>
         <td class="top-right">&nbsp;</td>
       </tr>
@@ -381,7 +381,9 @@
       </tr>
     </table>
 
-    <div class="ad728" aria-hidden="true">&nbsp;</div>
+    <div class="ad728">
+      728 x 90 banner strip (classic AdSense blues: border #2D5893 / fill #99AACC)<br />from archived 2008 HTML
+    </div>
 
     <div class="welcome-wrap">
       <div class="welcome-cap"></div>
@@ -391,101 +393,26 @@
       <div class="welcome-cap"></div>
     </div>
 
-    <div class="main-grid">
-      <div class="col-left-ads">
-        <div class="mini">&nbsp;</div>
-      </div>
-      <div class="gutter" aria-hidden="true"></div>
-
-      <div class="col-main">
-        <div class="toolbar">
-          <div class="toolbar-inner">
-            <span class="stat-pill">&nbsp;</span>
-            <div class="nav-btns">
-              <a href="#">Home</a>
-              <a href="#">Login</a>
-              <a href="#">Sign up</a>
-              <a href="#">Games</a>
-            </div>
-            <a class="link1" href="#">Sitemap</a>
-          </div>
-        </div>
-        <div class="inner-pad">
-          <div class="news-top"></div>
-          <div class="news-md">
-            <div class="news-head">
-              <strong style="font-size:12px;">Last semester of College</strong><br />
-              <span style="font-size:10px;">
-                posted by <strong><em><a href="#">Grant Cerulo</a></em></strong>
-                &nbsp;|&nbsp; <a href="#">http://www.ratubaworld.com</a><br />
-                <em>Wednesday, January 30, 2008 @ 17:26:32</em>
-              </span>
-            </div>
-            <div class="news-div"></div>
-            <p>I am currently on my third day of my last semester of college here at Umass Amherst.</p>
-            <p>We’re in stages of developing a new flash game called, <strong>“Monster Pop,”</strong> which I hope will be done soon because I need money! ARGH!</p>
-            <p>I’m also working on my thesis movie, <strong>“Depot”</strong>, updated on my facebook group.</p>
-            <p>We’ve passed the <strong>1,200,000</strong> hits mark. Weee hooo — gotta love those AdSense checks.</p>
-            <div class="news-div" style="border-top:1px solid #000;border-bottom:none;margin-top:12px;"></div>
-            <div class="news-actions">
-              <a href="#">Comments (3)</a>&nbsp;
-              <a href="#">Post Comment</a>
-            </div>
-          </div>
-          <div class="news-bottom"></div>
-
-          <hr class="sep" />
-
-          <div class="news-top"></div>
-          <div class="news-md">
-            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:4px;"><tr>
-              <td valign="top" width="60"><a href="#"><div class="avatar"></div></a></td>
-              <td>
-                <strong style="font-size:12px;">About the forums…</strong><br />
-                <span style="font-size:10px;">
-                  posted by <strong><em><a href="#">Gold Leader</a></em></strong><br />
-                  <em>Saturday, November 10, 2007 @ 21:00:21</em>
-                </span>
-              </td>
-            </tr></table>
-            <div class="news-div"></div>
-            <p>We lack adequate measures to stop the influx of bots, so forum registration requires admin activation — email Radis / Gold Leader after signing up.</p>
-            <div class="news-div" style="border-top:1px solid #000;border-bottom:none;"></div>
-            <div class="news-actions">
-              <a href="#">Comments (2)</a>&nbsp;
-              <a href="#">Post Comment</a>
-            </div>
-          </div>
-          <div class="news-bottom"></div>
-
-          <div class="read-all"><a href="#">Read all News</a></div>
-        </div>
-      </div>
-
-      <div class="gutter" aria-hidden="true"></div>
-
-      <div class="col-right">
-        <div class="tower" aria-hidden="true">&nbsp;</div>
-        <div class="newsletter">
-          <div class="top">Newsletter</div>
-          <div class="mid"></div>
-          <div class="form">
-            Email:
-            <input type="text" value="Enter your E-mail" readonly />
-            <button type="button" class="sub">Subscribe</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="comments-band">
+    <!-- Guestbook / Utterances: directly under Welcome -->
+    <div id="guestbook-anchor" class="comments-band">
       <div class="news-top"></div>
       <div class="news-md">
-        <strong style="font-size:12px;">Guestbook</strong><br />
-        <span style="font-size:10px;">Sign in with GitHub to leave a comment.</span>
+        <strong style="font-size:13px;">GUESTBOOK (GitHub comments)</strong><br />
+        <span style="font-size:10px;">
+          Powered by <a href="https://utteranc.es" target="_blank" rel="noopener">Utterances</a>.
+          Uses GitHub Issues in <strong>ratubaworld/ratubaworld-comments</strong>.
+          Readers need a free GitHub sign-in (keeps bots out).
+        </span>
         <div id="utterances-comments" aria-live="polite"></div>
         <div id="comments-config-msg" class="comments-config-msg">
-          <p>If comments don’t load, install <a href="https://github.com/apps/utterances" target="_blank" rel="noopener">Utterances</a> on <code>ratubaworld/ratubaworld-comments</code>.</p>
+          <strong>Setup checklist (once):</strong>
+          <ol style="margin:8px 0 0 18px;padding:0;">
+            <li>Repo <code>ratubaworld/ratubaworld-comments</code> is public with Issues enabled.</li>
+            <li>Utterances app installed: <a href="https://github.com/apps/utterances" target="_blank" rel="noopener">github.com/apps/utterances</a></li>
+            <li>This page hosts on HTTPS (GitHub Pages), not file://.</li>
+            <li>You own <code>REPO</code> in the script at the bottom of this file.</li>
+          </ol>
+          <p style="margin:10px 0 0;">Alternative: <a href="https://giscus.app" target="_blank" rel="noopener">giscus.app</a> (Discussions instead of Issues).</p>
         </div>
         <script>
         (function () {
@@ -520,16 +447,64 @@
       <div class="news-bottom"></div>
     </div>
 
+    <!-- Original chrome: nav strip + sidebar. Old front-page posts removed. -->
+    <div class="main-grid">
+      <div class="col-left-ads">
+        <div class="mini">Small ad slot<br />110 x 32 style area</div>
+      </div>
+      <div class="gutter" aria-hidden="true"></div>
+
+      <div class="col-main">
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <span class="stat-pill">[hits counter]</span>
+            <div class="nav-btns">
+              <a href="#">Home</a>
+              <a href="#">Login</a>
+              <a href="#">Sign up</a>
+              <a href="#">Games</a>
+            </div>
+            <a class="link1" href="#">Sitemap</a>
+          </div>
+        </div>
+        <div class="inner-pad">
+          Old front-page blog copies were cleared out. Conversation lives in the <strong>GUESTBOOK</strong> block above.
+        </div>
+      </div>
+
+      <div class="gutter" aria-hidden="true"></div>
+
+      <div class="col-right">
+        <div class="tower">
+          120 x 600 tower ad slot<br />
+          <span style="font-size:9px">(sidebar chrome like 2008 layout)</span>
+        </div>
+        <div class="newsletter">
+          <div class="top">Newsletter</div>
+          <div class="mid"></div>
+          <div class="form">
+            Email:
+            <input type="text" value="Enter your E-mail" readonly />
+            <button type="button" class="sub">Subscribe (mock)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <table class="footer-table" role="presentation" width="100%">
       <tr>
         <td class="footer-md" colspan="3">
           <strong>
-            All material is © 2006 <a href="#" class="link1">www.ratubaworld.com</a>, Grant Cerulo &amp; affiliates<br />
+            All material is &copy; 2006 <a href="#" class="link1">www.ratubaworld.com</a>, Grant Cerulo &amp; affiliates<br />
             Ratuba<sup style="font-size:7px">TM</sup> Games and Ratuba<sup style="font-size:7px">TM</sup> Productions are divisions of Ratuba<sup style="font-size:7px">TM</sup> World
           </strong>
         </td>
       </tr>
     </table>
+
+    <p class="note">
+      Cosmetic rebuild from archived HTML + css; guestbook wired to Utterances on GitHub Pages.
+    </p>
   </div>
 </body>
 </html>
