@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <!--
-  Archived layout homage (Wayback ~2008). Comments: Cusdis - readers post without signing in (you approve in dashboard).
+  Archived layout homage (Wayback ~2008). Guestbook: Utterances (GitHub Issues; readers sign in with GitHub once).
 -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ratuba World - guestbook (Cusdis)</title>
+  <title>Ratuba World - guestbook</title>
   <style>
     body {
       margin: 0;
@@ -115,7 +115,7 @@
     .comments-band .news-md {
       padding: 18px 28px 16px;
     }
-    #cusdis_thread {
+    #utterances-comments {
       margin-top: 14px;
       min-height: 260px;
     }
@@ -387,36 +387,51 @@
       <div class="welcome-cap"></div>
     </div>
 
-    <!-- Guestbook: Cusdis (anonymous-friendly; approve in Cusdis dashboard) -->
+    <!-- Guestbook: Utterances (issues on ratubaworld-comments) -->
     <div id="guestbook-anchor" class="comments-band">
       <div class="news-top"></div>
       <div class="news-md">
         <strong style="font-size:13px;">GUESTBOOK</strong><br />
         <span style="font-size:10px;">
-          No GitHub login. Powered by open-source <a href="https://cusdis.com" target="_blank" rel="noopener">Cusdis</a>
-          (~5&nbsp;KB). Comments are held until you approve them in your Cusdis moderation panel &mdash;
-          spam is not auto-filtered, so skim the dashboard regularly.
+          Posted via <a href="https://utteranc.es/" target="_blank" rel="noopener">Utterances</a>: each page maps to an issue thread in
+          <strong>ratubaworld-comments</strong>. Readers need a GitHub account to comment.
         </span>
-        <div
-          id="cusdis_thread"
-          data-host="https://cusdis.com"
-          data-app-id="YOUR_CUSDIS_APP_ID"
-          data-page-id="ratubaworld-guestbook"
-          data-page-url="https://ratubaworld.github.io/ratubaworld-pages/"
-        ></div>
-        <div id="cusdis-setup-msg" class="comments-config-msg" style="display:none;">
-          <strong>Cusdis not wired yet:</strong> sign in at <a href="https://cusdis.com/dashboard" target="_blank" rel="noopener">cusdis.com/dashboard</a>, create a site, copy your <strong>App ID</strong>, then paste it into <code>data-app-id</code> on the <code>div id="cusdis_thread"</code> in <code>index.html</code> and redeploy.
+        <script>var REPO = "ratubaworld/ratubaworld-comments";</script>
+        <div id="utterances-comments"></div>
+        <div id="utterances-setup-msg" class="comments-config-msg" style="display:none;">
+          <strong>Set up Utterances:</strong> fork or create <code>ratubaworld-comments</code>,
+          edit <code>var REPO</code> above to <code>YOUR_USERNAME/ratubaworld-comments</code>, redeploy from <code>DEPLOY.cmd</code>,
+          then install the Utterances app on that repo: <a href="https://github.com/apps/utterances/installations/new" target="_blank" rel="noopener">github.com/apps/utterances/installations/new</a>.
         </div>
         <script>
         (function () {
-          var t = document.getElementById('cusdis_thread');
-          var w = document.getElementById('cusdis-setup-msg');
-          if (!t || !w) return;
-          var aid = t.getAttribute('data-app-id') || '';
-          if (aid.indexOf('YOUR_CUSDIS_APP_ID') !== -1) w.style.display = 'block';
+          var w = document.getElementById('utterances-setup-msg');
+          if (!w || typeof REPO !== 'string') return;
+          if (/^file:/i.test(location.href)) {
+            w.style.display = 'block';
+            w.innerHTML =
+              '<strong>Local preview:</strong> utterances iframe needs <code>https</code>. Deploy to GitHub Pages and open your live URL. ' +
+              w.innerHTML;
+            return;
+          }
+          if (REPO.indexOf('YOUR_GITHUB_USERNAME') !== -1) {
+            w.style.display = 'block';
+          }
+        })();
+        (function () {
+          var mount = document.getElementById('utterances-comments');
+          if (!mount || typeof REPO !== 'string') return;
+          var el = document.createElement('script');
+          el.src = 'https://utteranc.es/client.js';
+          el.async = true;
+          el.crossOrigin = 'anonymous';
+          el.setAttribute('repo', REPO);
+          el.setAttribute('issue-term', 'pathname');
+          el.setAttribute('label', 'guestbook');
+          el.setAttribute('theme', 'github-light');
+          mount.appendChild(el);
         })();
         </script>
-        <script defer src="https://cusdis.com/js/cusdis.es.js"></script>
       </div>
       <div class="news-bottom"></div>
     </div>
@@ -477,7 +492,7 @@
     </table>
 
     <p class="note">
-      Cosmetic rebuild from archived HTML; guestbook uses Cusdis (no reader login).
+      Cosmetic rebuild from archived HTML; guestbook uses Utterances + GitHub Issues.
     </p>
   </div>
 </body>
