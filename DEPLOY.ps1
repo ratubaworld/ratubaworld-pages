@@ -141,8 +141,16 @@ $encToken = [Uri]::EscapeDataString($token)
 $remoteUrlPush = 'https://x-access-token:' + $encToken + '@github.com/' + $userLogin + '/' + $PagesRepo + '.git'
 $remoteClean = 'https://github.com/' + $userLogin + '/' + $PagesRepo + '.git'
 
-& $Git -C $Root remote remove origin 2>$null | Out-Null
-& $Git -C $Root remote add origin $remoteClean
+# "remote remove origin" errors if missing; stderr under StrictMode stops the script. Use cmd for a quiet rm.
+cmd.exe /c "`"$Git`" -C `"$Root`" remote remove origin >nul 2>&1"
+$saveEaRemote = $ErrorActionPreference
+$ErrorActionPreference = 'SilentlyContinue'
+$null = & $Git -C $Root remote add origin $remoteClean 2>&1
+$addRc = $LASTEXITCODE
+$ErrorActionPreference = $saveEaRemote
+if ($addRc -ne 0) {
+  $null = & $Git -C $Root remote set-url origin $remoteClean 2>&1
+}
 Write-Host ''
 Write-Host 'Pushing to GitHub...'
 $env:GIT_TERMINAL_PROMPT = '0'
