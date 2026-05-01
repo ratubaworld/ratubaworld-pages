@@ -123,6 +123,23 @@
       position: relative;
     }
 
+    .hero-loop-wrap {
+      margin: 10px 0 4px;
+      display: flex;
+      justify-content: center;
+    }
+    .hero-loop {
+      width: 100%;
+      max-width: min(200px, 46vw);
+      max-height: min(120px, 20vh);
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.25);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
     audio.fallback-hidden {
       display: none;
     }
@@ -146,6 +163,37 @@
   <div class="wrap">
     <header>
       <h1>welcome to ratubaworld</h1>
+      <div class="hero-loop-wrap">
+        <video
+          id="hero-loop"
+          class="hero-loop"
+          autoplay
+          muted
+          loop
+          playsinline
+          disablepictureinpicture
+          preload="metadata"
+          aria-label="Ratuba World loop"
+        ></video>
+      </div>
+      <script>
+      (function () {
+        function resolveMedia(path) {
+          try {
+            var base = window.location.href.split("#")[0].split("?")[0];
+            if (/\.html?$/i.test(base)) base = base.replace(/[^/\\]+$/, "");
+            if (!/\/$/i.test(base)) base += "/";
+            return new URL(path, base).href;
+          } catch (e) {
+            return path;
+          }
+        }
+        window._ratubaResolveMedia = resolveMedia;
+        var HERO_MP4 = "media/grok-video-a9dd2e0f-fe0e-40ac-b854-4d6d6e1a2eb3.mp4";
+        var v = document.getElementById("hero-loop");
+        if (v) v.src = resolveMedia(HERO_MP4);
+      })();
+      </script>
       <p class="subtle">
         <strong>Play</strong> streams a hard-rock&ndash;style guitar remaster (WAV baked into this site).
         Want the untouched upload? See it on <a href="https://www.youtube.com/watch?v=a7vzD-bmblw" target="_blank" rel="noopener noreferrer">YouTube</a>.
@@ -196,6 +244,8 @@
       (function () {
         var MEDIA = "media/modern-hardrock-a7vz.wav";
         function resolveMediaHref(path) {
+          if (typeof window._ratubaResolveMedia === "function")
+            return window._ratubaResolveMedia(path);
           try {
             var base = window.location.href.split("#")[0].split("?")[0];
             if (/\.html?$/i.test(base)) base = base.replace(/[^/\\]+$/, "");
