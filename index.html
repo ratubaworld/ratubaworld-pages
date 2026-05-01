@@ -128,9 +128,10 @@
       <h1>welcome to ratubaworld</h1>
       <p class="subtle">Tap play for the original NES-style title cue (~40s, then loops): <code>media/ratuba-chiptune.wav</code>. Utterances guestbook requires GitHub to post.</p>
       <button type="button" class="pill" id="chip-toggle" aria-pressed="false">Play chip loop</button>
-      <p class="hint">iPhone: sound starts after you tap. Pause anytime.</p>
+      <p class="hint" id="chip-hint">iPhone: sound starts after you tap. Pause anytime.</p>
 
-      <audio id="file-loop" class="fallback-hidden" src="media/ratuba-chiptune.wav" preload="none" playsinline loop></audio>
+      <!-- src set in script so URLs like …/ratubaworld-pages (no trailing slash) still resolve -->
+      <audio id="file-loop" class="fallback-hidden" preload="metadata" playsinline loop></audio>
     </header>
 
     <section class="card">
@@ -173,17 +174,44 @@
       (function () {
         var btn = document.getElementById("chip-toggle");
         var fileEl = document.getElementById("file-loop");
-        if (!btn) return;
-        var fileSrc = fileEl ? (fileEl.getAttribute("src") || "").trim() : "";
-        if (fileEl && fileSrc.length > 0) {
-          fileEl.volume = 0.45;
+        var hint = document.getElementById("chip-hint");
+        if (!btn || !fileEl) return;
+
+        var hintDefault = hint ? hint.textContent : "";
+
+        function resolveChipWavHref() {
+          try {
+            var base = window.location.href.split("#")[0].split("?")[0];
+            if (/\.html?$/i.test(base)) base = base.replace(/[^/\\]+$/, "");
+            if (!/\/$/i.test(base)) base += "/";
+            return new URL("media/ratuba-chiptune.wav", base).href;
+          } catch (e) {
+            return "media/ratuba-chiptune.wav";
+          }
+        }
+
+        fileEl.src = resolveChipWavHref();
+        fileEl.volume = 0.45;
+
+        var fileSrc = (fileEl.getAttribute("src") || "").trim();
+        if (fileSrc.length > 0) {
           btn.addEventListener("click", function () {
             if (fileEl.paused) {
-              fileEl.play().catch(function () {});
+              if (hint) hint.textContent = hintDefault;
+              fileEl.play().catch(function (err) {
+                if (hint)
+                  hint.textContent =
+                    "Audio did not play: " +
+                    (err && err.message ? err.message : "unknown") +
+                    " (volume / mute / network?).";
+                btn.textContent = "Play chip loop";
+                btn.setAttribute("aria-pressed", "false");
+              });
               btn.textContent = "Pause chip loop";
               btn.setAttribute("aria-pressed", "true");
             } else {
               fileEl.pause();
+              if (hint) hint.textContent = hintDefault;
               btn.textContent = "Play chip loop";
               btn.setAttribute("aria-pressed", "false");
             }
