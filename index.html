@@ -142,6 +142,14 @@
       height: 100%;
     }
 
+    .disclosure-below-card {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: rgba(232, 238, 245, 0.54);
+      max-width: 36rem;
+    }
+
     .hint {
       font-size: 0.82rem;
       color: rgba(232,238,245,0.45);
@@ -154,7 +162,7 @@
     <header>
       <h1>welcome to ratubaworld</h1>
       <p class="subtle">
-        Music streams from an embedded <a href="https://www.youtube.com/watch?v=hHW6yp8Ddp4" target="_blank" rel="noopener noreferrer">YouTube</a> player here (nothing is stored on this site); the clip is visually hidden so you only hear audio. Utterances guestbook requires GitHub to post.
+        Use <strong>Play</strong> for site music, or <a href="https://www.youtube.com/watch?v=hHW6yp8Ddp4" target="_blank" rel="noopener noreferrer">watch on YouTube</a>.
       </p>
       <button type="button" class="pill" id="chip-toggle" aria-pressed="false" aria-controls="yt-player-host">Play</button>
       <p class="hint" id="chip-hint">Tap Play for audio only. To watch the clip, use Open on YouTube.</p>
@@ -322,6 +330,10 @@
       })();
       </script>
     </section>
+
+    <p class="disclosure-below-card">
+      Music streams from an embedded YouTube player here (nothing is stored on this site); the clip is visually hidden so you only hear audio. Utterances guestbook requires GitHub to post.
+    </p>
 
     <footer>
       <a href="classic-2008.html">2008 layout</a> &middot; ratuba world
