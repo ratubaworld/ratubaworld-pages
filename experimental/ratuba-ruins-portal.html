@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<!--
+  Experimental ruin-uplink portal: 2008 portal energy × Kefka-floating-city cyber grime.
+  Mobile-first / iPhone safe areas; blue-forward. Not linked from index.html.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0a1628" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>ratubaworld.com — Ruin uplink (concept)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #050810;
+      --panel: rgba(10, 16, 28, 0.88);
+      --pipe: #152238;
+      --pipe-hi: #2a4060;
+      --blue-hot: #2a8cff;
+      --cyan: #2ae8ff;
+      --cyan-dim: rgba(42, 232, 255, 0.38);
+      --text: #e8f4ff;
+      --muted: rgba(232, 244, 255, 0.58);
+      --risk: rgba(255, 60, 100, 0.15);
+      --steel: rgba(30, 80, 160, 0.45);
+      --shatter-tile: clamp(208px, 38vw, 400px);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+      padding-bottom: env(safe-area-inset-bottom);
+      font-family: "Roboto Condensed", ui-sans-serif, system-ui, sans-serif;
+      color: var(--text);
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(ellipse 140% 90% at 50% -15%, rgba(42, 140, 255, 0.22), transparent 52%),
+        radial-gradient(900px 500px at 90% 20%, rgba(30, 80, 180, 0.12), transparent 50%),
+        repeating-linear-gradient(
+          -12deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.07) 2px,
+          rgba(0, 0, 0, 0.07) 3px
+        ),
+        linear-gradient(185deg, rgba(11, 20, 40, 0.82) 0%, rgba(5, 8, 16, 0.86) 42%, rgba(2, 4, 8, 0.9) 100%),
+        url("assets/ratuba-shatter-tile.png");
+      background-repeat: no-repeat, no-repeat, repeat, no-repeat, repeat;
+      background-size: auto, auto, auto, auto, var(--shatter-tile) var(--shatter-tile);
+      background-position: center top, center top, center top, center top, top left;
+    }
+
+    /* Subtle CRT / grime — GPU-light on mobile */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.055;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 2px,
+        rgba(0, 70, 120, 0.35) 2px,
+        rgba(0, 70, 120, 0.35) 3px
+      );
+      mix-blend-mode: overlay;
+    }
+
+    a {
+      color: #7df4ff;
+      text-decoration: none;
+      transition: color 0.15s ease, text-shadow 0.15s ease;
+    }
+    a:hover {
+      color: #b8ffff;
+      text-shadow: 0 0 12px var(--cyan-dim);
+    }
+
+    .site-chrome {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding-top: env(safe-area-inset-top);
+    }
+
+    button,
+    .btn-mini,
+    .cta-ruin,
+    .plug-btn,
+    .tip-card {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* —— Top chrome —— */
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px clamp(14px, 4vw, 36px);
+      border-bottom: 1px solid var(--pipe);
+      background: linear-gradient(180deg, rgba(12, 22, 42, 0.97), rgba(6, 12, 24, 0.94));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 0 28px rgba(42, 140, 255, 0.08);
+      position: relative;
+      z-index: 4;
+    }
+
+    .brand {
+      font-family: "Orbitron", sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.05rem, 3vw, 1.55rem);
+      letter-spacing: 0.08em;
+      color: var(--text);
+      text-shadow:
+        0 0 8px var(--cyan-dim),
+        0 0 28px rgba(0, 240, 255, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--cyan) 45%, var(--blue-hot));
+      box-shadow: 0 0 14px rgba(42, 140, 255, 0.9);
+      animation: pulse-dot 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      50% {
+        opacity: 0.45;
+        box-shadow: 0 0 10px rgba(42, 140, 255, 0.5);
+      }
+    }
+
+    .login-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-strip label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .login-strip input {
+      width: clamp(92px, 18vw, 130px);
+      padding: 6px 9px;
+      border: 1px solid var(--pipe-hi);
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.45);
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    .login-strip input:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 1px var(--cyan-dim);
+    }
+
+    .btn-mini {
+      font-family: inherit;
+      cursor: pointer;
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid var(--cyan);
+      border-radius: 3px;
+      background: linear-gradient(180deg, rgba(0, 240, 255, 0.35), rgba(0, 120, 140, 0.2));
+      color: var(--text);
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 14px rgba(0, 240, 255, 0.15);
+      transition: transform 0.1s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-mini:hover {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 0 22px rgba(0, 240, 255, 0.35);
+    }
+
+    .btn-mini:active {
+      transform: translateY(1px);
+    }
+
+    .login-feedback {
+      width: 100%;
+      flex-basis: 100%;
+      margin: 0;
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-radius: 4px;
+      border: 1px dashed rgba(0, 240, 255, 0.25);
+      background: rgba(0, 20, 30, 0.5);
+      display: none;
+    }
+
+    .login-feedback.visible {
+      display: block;
+    }
+
+    /* —— Pipe nav —— */
+    .pipe-nav-wrap {
+      position: relative;
+      z-index: 3;
+      margin: 0 clamp(12px, 3vw, 36px);
+    }
+
+    .pipe-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: 10px 6px;
+      padding: 10px 16px;
+      margin-top: -1px;
+      border: 1px solid var(--pipe-hi);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      background: linear-gradient(180deg, rgba(14, 24, 44, 0.96), rgba(8, 14, 28, 0.9));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow:
+        inset 0 0 44px rgba(0, 0, 0, 0.5),
+        0 12px 32px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(42, 232, 255, 0.1);
+    }
+
+    .pipe-nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(240, 250, 255, 0.92);
+      font-weight: 600;
+      font-size: clamp(0.72rem, 1.65vw, 0.82rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.45em 0.35em;
+      min-height: 44px;
+    }
+
+    .pipe-nav span.sep {
+      align-self: center;
+      color: rgba(42, 140, 255, 0.45);
+      font-size: 0.55rem;
+      user-select: none;
+    }
+
+    @media (max-width: 739px) {
+      .pipe-nav-wrap {
+        margin-left: 0;
+        margin-right: 0;
+      }
+      .pipe-nav {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+        overscroll-behavior-x: contain;
+        gap: 0;
+        padding: 10px calc(14px + env(safe-area-inset-right)) 14px calc(14px + env(safe-area-inset-left));
+        scrollbar-width: thin;
+        scrollbar-color: rgba(42, 140, 255, 0.35) transparent;
+      }
+      .pipe-nav::-webkit-scrollbar {
+        height: 5px;
+      }
+      .pipe-nav::-webkit-scrollbar-thumb {
+        background: rgba(42, 140, 255, 0.35);
+        border-radius: 4px;
+      }
+      .pipe-nav > a {
+        scroll-snap-align: start;
+        flex-shrink: 0;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .pipe-nav > span.sep {
+        flex-shrink: 0;
+        padding: 0 4px;
+      }
+    }
+
+    /* Conduit gutter under nav — extra pipes & cables */
+    .conduit-gutter {
+      margin: -6px clamp(12px, 3vw, 36px) 0;
+      height: 56px;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    @media (max-width: 739px) {
+      .conduit-gutter {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+
+    .conduit-gutter svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* —— Hero —— */
+    .hero {
+      position: relative;
+      margin: 18px clamp(12px, 3vw, 36px) 24px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--pipe-hi);
+      box-shadow:
+        0 0 0 1px rgba(0, 240, 255, 0.12),
+        0 24px 60px rgba(0, 0, 0, 0.55);
+      min-height: min(52vh, 420px);
+      isolation: isolate;
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        min-height: min(42vh, 340px);
+        margin-top: 10px;
+      }
+    }
+
+    .hero-scene {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: center;
+      gap: clamp(14px, 3vw, 22px);
+      padding: clamp(28px, 6vw, 56px) clamp(16px, 4vw, 40px);
+      min-height: inherit;
+      background: linear-gradient(
+        to top,
+        rgba(4, 8, 18, 0.97) 0%,
+        rgba(8, 12, 24, 0.5) 48%,
+        transparent 74%
+      );
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-family: "Roboto Condensed", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.92rem, 2.8vw + 0.35rem, 1.65rem);
+      line-height: 1.22;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-shadow:
+        0 0 20px rgba(0, 0, 0, 0.9),
+        0 2px 0 #000,
+        0 0 32px rgba(0, 240, 255, 0.2);
+      max-width: 28em;
+    }
+
+    .cta-ruin {
+      font-family: "Orbitron", sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.82rem, 2vw + 0.4rem, 1.08rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 15px clamp(26px, 6vw, 48px);
+      min-height: 48px;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      background: linear-gradient(180deg, #3dacff 0%, #2060c8 42%, #0a3560 100%);
+      box-shadow:
+        0 0 0 2px rgba(0, 0, 0, 0.6),
+        0 0 24px rgba(42, 140, 255, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      text-shadow: 0 2px 8px rgba(0, 60, 80, 0.8);
+      transition: transform 0.14s ease, box-shadow 0.2s ease;
+    }
+
+    .cta-ruin:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow:
+        0 0 0 2px rgba(0, 0, 0, 0.55),
+        0 0 40px rgba(0, 240, 255, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .cta-ruin:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    /* —— Three columns —— */
+    .widgets {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      padding: 0 clamp(12px, 3vw, 36px) 48px;
+      max-width: 1260px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 900px) {
+      .widgets {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+        align-items: start;
+      }
+    }
+
+    .widget {
+      position: relative;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--pipe-hi);
+      background:
+        linear-gradient(145deg, rgba(42, 140, 255, 0.04), transparent),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.03), transparent),
+        var(--panel);
+      box-shadow:
+        inset 0 1px 0 rgba(42, 232, 255, 0.08),
+        inset 0 0 0 4px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(42, 90, 160, 0.15),
+        0 8px 28px rgba(0, 0, 0, 0.4),
+        0 0 24px rgba(42, 100, 200, 0.06);
+      overflow: hidden;
+    }
+
+    .widget > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .widget::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.15;
+      z-index: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 8px,
+        rgba(42, 180, 255, 0.08) 8px,
+        rgba(42, 180, 255, 0.08) 9px
+      );
+      mask-image: linear-gradient(transparent 60%, black);
+    }
+
+    .widget h3 {
+      margin: 0 0 10px;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      text-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      padding-bottom: 8px;
+    }
+
+    .signal-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .signal-list li::before {
+      content: "//";
+      color: rgba(0, 240, 255, 0.35);
+      margin-right: 6px;
+      font-size: 0.75rem;
+      font-family: ui-monospace, monospace;
+    }
+
+    .plug-btn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 12px;
+      font-family: "Orbitron", sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      border: 1px solid rgba(42, 180, 255, 0.5);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--cyan);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.12);
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .plug-btn:hover {
+      background: rgba(0, 240, 255, 0.12);
+      color: #fff;
+    }
+
+    .tips-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 520px) {
+      .tips-strip {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .tip-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      color: inherit;
+      font: inherit;
+    }
+
+    .tip-card:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 2px;
+    }
+
+    .thumb {
+      aspect-ratio: 1;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      overflow: hidden;
+      background: linear-gradient(135deg, #0c1218 0%, #080c10 100%);
+      position: relative;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.85);
+      transition: box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    .tip-card:hover .thumb {
+      box-shadow:
+        inset 0 0 30px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(0, 240, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* abstract glitch thumbnails */
+    .thumb-g1 {
+      background:
+        radial-gradient(circle at 30% 20%, rgba(0, 240, 255, 0.35), transparent 45%),
+        repeating-linear-gradient(-18deg, #0a1418, #0a1418 2px, #121820 2px, #121820 3px),
+        #05080c;
+    }
+    .thumb-g2 {
+      background:
+        conic-gradient(from 120deg at 50% 50%, #102028, transparent, #082018, transparent 60%, #081018),
+        repeating-linear-gradient(0deg, #080c10 0px, #080c10 6px, #0f1820 6px, #0f1820 7px);
+    }
+    .thumb-g3 {
+      background:
+        linear-gradient(to bottom right, transparent 46%, rgba(0, 240, 255, 0.08) 48%, transparent 52%),
+        radial-gradient(circle at 70% 60%, rgba(255, 60, 100, 0.12), transparent 50%),
+        #090d12;
+    }
+    .thumb-g4 {
+      background:
+        linear-gradient(205deg, #0c1018 55%, transparent 56%),
+        repeating-linear-gradient(90deg, #181005 0, #181005 8px, #201808 8px, #201808 9px),
+        #080604;
+    }
+
+    .thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0, 240, 255, 0.045) 3px,
+        rgba(0, 240, 255, 0.045) 4px
+      );
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .tip-caption {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(248, 255, 255, 0.9);
+      text-shadow: 0 1px 0 #000;
+    }
+
+    /* charts */
+    .chart-block {
+      margin-top: 10px;
+    }
+
+    .bar-meter {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 8px;
+      height: 90px;
+      padding: 0 4px;
+    }
+
+    .bar-meter .bar-fill {
+      flex: 1;
+      max-width: 42px;
+      margin: 0 auto;
+      height: var(--bh, 70%);
+      border-radius: 4px;
+      transform-origin: bottom center;
+      transform: scaleY(0.08);
+      opacity: 0.55;
+      background: linear-gradient(to top, #0a5090, #2ae8ff);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 0 12px rgba(42, 140, 255, 0.28);
+      animation: bar-rise 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .bar-meter .bar-fill:nth-child(1) {
+      animation-delay: 0.04s;
+      --bh: 58%;
+    }
+    .bar-meter .bar-fill:nth-child(2) {
+      animation-delay: 0.14s;
+      --bh: 82%;
+    }
+    .bar-meter .bar-fill:nth-child(3) {
+      animation-delay: 0.24s;
+      --bh: 44%;
+    }
+    .bar-meter .bar-fill:nth-child(4) {
+      animation-delay: 0.34s;
+      --bh: 96%;
+    }
+    .bar-meter .bar-fill:nth-child(5) {
+      animation-delay: 0.44s;
+      --bh: 68%;
+    }
+
+    @keyframes bar-rise {
+      to {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+    }
+
+    .line-svg {
+      width: 100%;
+      height: 88px;
+      display: block;
+    }
+
+    .line-path {
+      fill: none;
+      stroke: url(#lineGradRuins);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 520;
+      stroke-dashoffset: 520;
+      animation: draw-line 2.2s ease-out 0.2s forwards;
+    }
+
+    @keyframes draw-line {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .legend {
+      margin: 6px 0 0;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px 16px 28px;
+      font-size: 0.74rem;
+      letter-spacing: 0.06em;
+      color: rgba(200, 220, 238, 0.45);
+      border-top: 1px solid var(--pipe);
+      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.35));
+    }
+
+    footer strong {
+      color: rgba(100, 190, 255, 0.85);
+      font-weight: 600;
+    }
+
+    section.anchor-pad {
+      scroll-margin-top: 120px;
+    }
+
+    @media (min-width: 740px) {
+      section.anchor-pad {
+        scroll-margin-top: 24px;
+      }
+    }
+
+    .domain-tag {
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: lowercase;
+      color: rgba(127, 184, 255, 0.75);
+      margin-top: -2px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .btn-mini {
+        min-height: 44px;
+        padding: 8px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-chrome">
+  <header class="top-bar">
+    <div class="brand-wrap">
+      <div class="brand" aria-label="ratubaworld.com">
+        <span class="brand-dot" aria-hidden="true"></span>
+        RATUBA WORLD
+      </div>
+      <div class="domain-tag">ratubaworld.com</div>
+    </div>
+    <form class="login-strip" id="demo-login" novalidate>
+      <label for="ruin-user">Username</label>
+      <input id="ruin-user" type="text" name="username" autocomplete="username" placeholder="ghost_id" />
+      <label for="ruin-pass">Password</label>
+      <input id="ruin-pass" type="password" name="password" autocomplete="current-password" placeholder="••••••" />
+      <button type="submit" class="btn-mini">login</button>
+      <p class="login-feedback" id="login-feedback" role="status" aria-live="polite"></p>
+    </form>
+  </header>
+
+  <div class="pipe-nav-wrap">
+    <nav class="pipe-nav" aria-label="Ruins protocols">
+      <a href="#games">games</a><span class="sep">●</span>
+      <a href="#animations">animations</a><span class="sep">●</span>
+      <a href="#art">art</a><span class="sep">●</span>
+      <a href="#music">music</a><span class="sep">●</span>
+      <a href="#forums">forums</a><span class="sep">●</span>
+      <a href="#community">community</a><span class="sep">●</span>
+      <a href="#upload">upload</a><span class="sep">●</span>
+      <a href="#random">random</a>
+    </nav>
+  </div>
+
+  <div class="conduit-gutter" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 56" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="pipeSteel" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stop-color="#142238"/>
+          <stop offset="35%" stop-color="#2a4880"/>
+          <stop offset="70%" stop-color="#1a3050"/>
+          <stop offset="100%" stop-color="#0c1828"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="56" fill="#050910"/>
+      <path d="M0 42h380v10H0z M440 42h520v10H440z M1020 42h180v10h-180z" fill="url(#pipeSteel)" stroke="#3a72c4" stroke-width="0.5" opacity="0.9"/>
+      <path d="M60 0v42 M320 14v28 M760 10v32 M940 22v20 M1180 0v42" stroke="rgba(42,140,220,0.45)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M118 46h24v6h-24z M612 46h18v6h-18 M888 46h22v6h-22" fill="#182e50" stroke="rgba(80,170,255,0.35)"/>
+      <g stroke="rgba(42,200,255,0.42)" stroke-width="1.2" fill="none">
+        <path d="M24 52c120-56 246-72 392-62s342 18 512 22 246-34 296-92"/>
+        <path d="M88 54c92-42 206-62 362-54"/>
+        <path d="M700 54c148-84 294-118 478-114"/>
+      </g>
+      <g stroke="rgba(220,236,255,0.08)" stroke-width="0.6" fill="none">
+        <path d="M0 38h1200M0 32h1200"/>
+      </g>
+    </svg>
+  </div>
+  </div>
+
+  <section class="hero" aria-labelledby="featured-headline">
+    <div class="hero-scene" aria-hidden="true">
+      <!-- Inline scene: cloudy sky + floating industrial silhouette -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+        <defs>
+          <linearGradient id="sky" x1="0" x2="0.3" y1="0" y2="1">
+            <stop offset="0%" stop-color="#1a3058"/>
+            <stop offset="38%" stop-color="#0c1828"/>
+            <stop offset="100%" stop-color="#020408"/>
+          </linearGradient>
+          <linearGradient id="cloud" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#f4f9ff"/>
+            <stop offset="100%" stop-color="#9eb4c9"/>
+          </linearGradient>
+          <radialGradient id="beam" cx="50%" cy="0%" r="70%">
+            <stop offset="0%" stop-color="rgba(42,140,255,0.32)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.12"/></feComponentTransfer>
+          </filter>
+          <filter id="glow-placeholder" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect width="1200" height="480" fill="url(#sky)"/>
+        <rect width="1200" height="480" fill="url(#beam)"/>
+        <ellipse cx="200" cy="120" rx="160" ry="48" fill="url(#cloud)" opacity="0.55"/>
+        <ellipse cx="350" cy="140" rx="210" ry="62" fill="url(#cloud)" opacity="0.45"/>
+        <ellipse cx="900" cy="130" rx="180" ry="52" fill="url(#cloud)" opacity="0.42"/>
+        <ellipse cx="1080" cy="155" rx="220" ry="58" fill="url(#cloud)" opacity="0.38"/>
+        <ellipse cx="600" cy="380" rx="440" ry="140" fill="#040608" opacity="0.92"/>
+        <g transform="translate(220,138) scale(1.06)">
+          <rect x="120" y="90" width="520" height="160" rx="4" fill="#0a1218" stroke="#1a2836" stroke-width="2"/>
+          <rect x="160" y="40" width="90" height="220" rx="3" fill="#0c161e" stroke="#203040"/>
+          <rect x="320" y="20" width="70" height="240" rx="3" fill="#080e14" stroke="#283848"/>
+          <rect x="430" y="60" width="110" height="200" rx="3" fill="#0a141c" stroke="#1f2c38"/>
+          <rect x="120" y="250" width="520" height="14" fill="#090e14"/>
+          <g stroke="#4ad4ff" stroke-opacity="0.42" stroke-width="1">
+            <line x1="180" y1="90" x2="180" y2="248"/>
+            <line x1="280" y1="72" x2="280" y2="248"/>
+            <line x1="420" y1="82" x2="420" y2="246"/>
+          </g>
+          <circle cx="360" cy="130" r="22" fill="rgba(42,180,255,0.08)" stroke="rgba(90,200,255,0.6)" stroke-width="2"/>
+          <circle cx="360" cy="130" r="8" fill="#5ad8ff" filter="url(#glow-placeholder)"/>
+        </g>
+        <!-- Trunk mains + hanging leads (FF6-esque industrial sprawl) -->
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.72">
+          <g stroke="#1a4578" stroke-width="7">
+            <path d="M0 288 H160 V212 H336 V356 H584 V148 H828 V364 H1024 V232 H1200"/>
+            <path d="M48 480 V304 H288 V384 H648 V264 H888 V404"/>
+          </g>
+          <g stroke="rgba(70,150,240,0.55)" stroke-width="2.4">
+            <path d="M72 72 C110 218 284 274 392 392"/>
+            <path d="M1148 48 C1090 198 962 274 734 394"/>
+          </g>
+          <g stroke="rgba(80,215,255,0.45)" stroke-width="1.35">
+            <path d="M156 24 Q220 268 392 394 M492 118 L446 394 M744 154 L694 394 M986 106 L942 394"/>
+          </g>
+          <g stroke="rgba(200,226,255,0.1)" stroke-width="0.8">
+            <path d="M0 260h1200M0 244h1200"/>
+          </g>
+        </g>
+        <g opacity="0.55" stroke="#000" stroke-width="1">
+          <path d="M80 410 Q200 340 340 392 T580 378 T760 392 T940 362 T1180 400" fill="none" stroke="#080c10"/>
+        </g>
+        <path d="M140 418 C280 378 420 450 620 392 S920 362 1070 404" stroke="rgba(255,255,255,0.08)" stroke-width="40" stroke-linecap="round" fill="none"/>
+        <path d="M160 396 C340 356 540 438 740 392 S940 372 1130 400" stroke="rgba(220,230,240,0.22)" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <rect width="1200" height="480" filter="url(#noise)" opacity="0.45"/>
+      </svg>
+    </div>
+    <div class="hero-overlay">
+      <h2 id="featured-headline">Featured: Kefka’s floating void — new chaos protocol</h2>
+      <button type="button" class="cta-ruin" id="ascend-btn">Ascend to the ruin</button>
+    </div>
+  </section>
+
+  <div class="widgets">
+    <aside class="widget" id="signals">
+      <h3>Recent fallen signals</h3>
+      <ul class="signal-list">
+        <li><a href="#forums">Shard breach in sector 7 — moderation thread</a></li>
+        <li><a href="#music">Hard-rock uplink restabilized (WAV)</a></li>
+        <li><a href="#community">New chaos protocol draft v0.2</a></li>
+        <li><a href="#random">RNG sanctum rotates daily seed</a></li>
+      </ul>
+    </aside>
+
+    <section class="widget anchor-pad" id="animations">
+      <h3>Clips / tips</h3>
+      <p class="legend">Tap a thumbnail for a nonsense status pulse (concept only).</p>
+      <div class="tips-strip">
+        <button type="button" class="tip-card" data-msg="PIPELINE RIOT queued.">
+          <div class="thumb thumb-g1"></div>
+          <span class="tip-caption">Pipeline riot</span>
+        </button>
+        <button type="button" class="tip-card" data-msg="WIRED chaos dump archived.">
+          <div class="thumb thumb-g2"></div>
+          <span class="tip-caption">Wired chaos dump</span>
+        </button>
+        <button type="button" class="tip-card" data-msg="Cable run floated to edge cache.">
+          <div class="thumb thumb-g3"></div>
+          <span class="tip-caption">Floating cable run</span>
+        </button>
+        <button type="button" class="tip-card" data-msg="Grid rebellion scrubbed hot.">
+          <div class="thumb thumb-g4"></div>
+          <span class="tip-caption">Rusted grid rebellion</span>
+        </button>
+      </div>
+      <button type="button" class="plug-btn" id="plug-btn">Plug into the ruin</button>
+      <p class="legend" id="pulse-line" aria-live="polite" style="min-height: 1.2em; margin-top: 10px; color: var(--cyan-dim);"></p>
+    </section>
+
+    <aside class="widget">
+      <h3>Uplink telemetry</h3>
+      <p class="legend">Live-ish bars (SVG animation).</p>
+      <div class="chart-block" role="img" aria-label="Bar activity visualization">
+        <div class="bar-meter">
+          <div class="bar-fill"></div>
+          <div class="bar-fill"></div>
+          <div class="bar-fill"></div>
+          <div class="bar-fill"></div>
+          <div class="bar-fill"></div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 16px;">Analysis trace</h3>
+      <p class="legend">Protocol drift (concept trace).</p>
+      <svg class="line-svg" viewBox="0 0 260 88" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line analysis">
+        <defs>
+          <linearGradient id="lineGradRuins" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#006070"/>
+            <stop offset="50%" stop-color="#00f0ff"/>
+            <stop offset="100%" stop-color="#4080ff"/>
+          </linearGradient>
+        </defs>
+        <path
+          class="line-path"
+          d="M8 72 C52 62 74 82 118 54 S186 76 226 44 S246 62 254 38"
+        />
+      </svg>
+    </aside>
+  </div>
+
+  <!-- Lightweight anchor targets so nav jumps feel “wired” -->
+  <div style="padding: 0 clamp(16px,4vw,40px) 40px; max-width:1260px; margin: 0 auto; color: rgba(232,244,255,0.35); font-size: 0.78rem;">
+    <section class="anchor-pad" id="games" style="padding: 22px 0 8px; border-top: 1px dashed rgba(0,240,255,0.12);"><strong style="color: rgba(0,240,255,0.45);">games</strong> — placeholder sector (no backend).</section>
+    <section class="anchor-pad" id="art" style="padding: 16px 0;"><strong style="color: rgba(0,240,255,0.45);">art</strong> — placeholder sector.</section>
+    <section class="anchor-pad" id="music" style="padding: 16px 0;"><strong style="color: rgba(0,240,255,0.45);">music</strong> — placeholder sector.</section>
+    <section class="anchor-pad" id="forums" style="padding: 16px 0;"><strong style="color: rgba(0,240,255,0.45);">forums</strong> — placeholder sector.</section>
+    <section class="anchor-pad" id="community" style="padding: 16px 0;"><strong style="color: rgba(0,240,255,0.45);">community</strong> — placeholder sector.</section>
+    <section class="anchor-pad" id="upload" style="padding: 16px 0;"><strong style="color: rgba(0,240,255,0.45);">upload</strong> — placeholder sector.</section>
+    <section class="anchor-pad" id="random" style="padding: 16px 0;"><strong style="color: rgba(0,240,255,0.45);">random</strong> — placeholder sector.</section>
+  </div>
+
+  <footer>
+    <strong>© 2008–2026 ratubaworld.com</strong> • worlds in ruins • jack in responsibly<br />
+    <span style="opacity: 0.62;">concept build — experimental/ratuba-ruins-portal.html (not wired to mobile home).</span>
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById("demo-login");
+      var feedback = document.getElementById("login-feedback");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        feedback.textContent =
+          "Ruins uplink unavailable in this sandbox build: no passwords are transmitted. You may still roam the placeholders below.";
+        feedback.classList.add("visible");
+      });
+
+      document.getElementById("ascend-btn").addEventListener("click", function () {
+        document.getElementById("signals").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+
+      document.getElementById("plug-btn").addEventListener("click", function () {
+        var el = document.getElementById("pulse-line");
+        el.textContent = "Hot socket armed — standby for phantom handshake… ✓ fictional.";
+      });
+
+      document.querySelectorAll(".tip-card").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var msg = btn.getAttribute("data-msg") || "";
+          document.getElementById("pulse-line").textContent = msg;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

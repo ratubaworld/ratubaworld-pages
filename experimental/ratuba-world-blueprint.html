@@ -17,6 +17,8 @@
       --steel: #3a5470;
       --wire: rgba(42, 200, 255, 0.35);
       --text: #e8f4ff;
+      /* Square shatter tile (400×400 source) scales down on narrow screens */
+      --shatter-tile: clamp(208px, 38vw, 400px);
     }
 
     *,
@@ -38,7 +40,21 @@
         env(safe-area-inset-left);
       font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
       color: var(--text);
-      background: radial-gradient(120% 80% at 50% 0%, #0a1628 0%, var(--void) 45%, #000 100%);
+      background-color: #03060e;
+      /* Tile: shattered glass layer (edited square crop); overlays keep text readable */
+      background-image:
+        radial-gradient(ellipse 115% 75% at 50% -8%, rgba(28, 100, 200, 0.18), transparent 52%),
+        linear-gradient(
+          185deg,
+          rgba(5, 10, 22, 0.88) 0%,
+          rgba(4, 8, 18, 0.82) 38%,
+          rgba(3, 6, 14, 0.9) 100%
+        ),
+        url("assets/ratuba-shatter-tile.png");
+      background-repeat: no-repeat, no-repeat, repeat;
+      background-size: auto, auto, var(--shatter-tile) var(--shatter-tile);
+      background-position: top center, top center, top left;
+      /* Avoid fixed attachment — smoother on mobile */
     }
 
     a {
