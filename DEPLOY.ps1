@@ -1,26 +1,16 @@
-<#!
-  Deploy Ratuba Pages + comments repo — one paste of a GitHub token.
+# Deploy Ratuba Pages + comments repo: one paste of a GitHub token (ASCII-only script for PowerShell 5/cmd).
+#
+# Creates public repos ratubaworld-pages and ratubaworld-comments if missing,
+# rewrites REPO in index.html, pushes main, enables GitHub Pages (legacy).
+# You must install Utterances in the browser once (GitHub does not automate that).
 
-  What it does (no manual GitHub UI):
-  - Creates public repo "ratubaworld-pages" (this site) if missing
-  - Creates public repo "ratubaworld-comments" (Utterances / Issues) if missing
-  - Rewrites index.html → var REPO = "YOUR_LOGIN/ratubaworld-comments"
-  - Commits that change, pushes main to GitHub
-  - Turns on GitHub Pages (legacy, branch main, /)
-
-  You must do once in the browser (GitHub does not allow API for this):
-  - Install Utterances on "ratubaworld-comments" when the script opens the link
-
-  Token: classic PAT with "repo" scope, OR fine-grained with read/write on these two repos
-  + Administration (for Pages) if the API asks for it.
-#>
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$PagesRepo   = 'ratubaworld-pages'
-$IssuesRepo  = 'ratubaworld-comments'
+$PagesRepo  = 'ratubaworld-pages'
+$IssuesRepo = 'ratubaworld-comments'
 
-# --- Locate git.exe (your shell may not have Git on PATH)
+# --- Locate git.exe
 $Git = $null
 foreach ($p in @(
   'C:\Program Files\Git\cmd\git.exe',
@@ -34,7 +24,7 @@ if (-not $Git) {
   if ($cmd) { $Git = $cmd.Source }
 }
 if (-not $Git) {
-  Write-Error 'Git not found. Install Git for Windows, then run this script again.'
+  Write-Error 'Git not found. Install Git for Windows, then run again.'
 }
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -47,12 +37,16 @@ function Get-GitHubTokenFromUser {
   Write-Host ''
   Write-Host 'Create a token:' -ForegroundColor Cyan
   Write-Host '  https://github.com/settings/tokens/new' -ForegroundColor Cyan
-  Write-Host '  Classic: enable scope "repo" (full).' -ForegroundColor Gray
+  Write-Host '  Classic: enable scope repo (full).' -ForegroundColor Gray
   Write-Host ''
   $sec = Read-Host 'Paste token here' -AsSecureString
   $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
-  try { return [Runtime.InteropServices.Marshal]::PtrToStringUni($bstr) }
-  finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+  try {
+    return [Runtime.InteropServices.Marshal]::PtrToStringUni($bstr)
+  }
+  finally {
+    [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+  }
 }
 
 $token = Get-GitHubTokenFromUser
@@ -65,17 +59,17 @@ $headers = @{
   'User-Agent'           = 'ratubaworld-pages-deploy-script'
 }
 
-# --- Who am I?
 $me = Invoke-RestMethod -Uri 'https://api.github.com/user' -Headers $headers -Method GET
 $userLogin = $me.login
-Write-Host ""
+Write-Host ''
 Write-Host "Signed in as: $userLogin" -ForegroundColor Green
 
 function Test-RepoExists([string]$owner, [string]$name) {
   try {
     Invoke-RestMethod -Uri "https://api.github.com/repos/$owner/$name" -Headers $headers | Out-Null
     return $true
-  } catch {
+  }
+  catch {
     $code = $null
     if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
       $code = [int]$_.Exception.Response.StatusCode
@@ -93,100 +87,110 @@ function New-EmptyRepo([string]$name, [string]$description) {
 
 if (-not (Test-RepoExists $userLogin $IssuesRepo)) {
   Write-Host "Creating repo $IssuesRepo..."
-  New-EmptyRepo $IssuesRepo 'Ratubaworld — Utterances (GitHub Issues)'
-} else {
-  Write-Host "Repo $IssuesRepo already exists — OK"
+  New-EmptyRepo $IssuesRepo 'Ratubaworld - Utterances (GitHub Issues)'
+}
+else {
+  Write-Host "Repo $IssuesRepo already exists - OK"
 }
 
 if (-not (Test-RepoExists $userLogin $PagesRepo)) {
   Write-Host "Creating repo $PagesRepo..."
-  New-EmptyRepo $PagesRepo 'Ratubaworld — GitHub Pages (2008-style mock)'
-} else {
-  Write-Host "Repo $PagesRepo already exists — OK"
+  New-EmptyRepo $PagesRepo 'Ratubaworld - GitHub Pages (2008-style mock)'
+}
+else {
+  Write-Host "Repo $PagesRepo already exists - OK"
 }
 
-# --- Point Utterances at YOUR login
 $idx = Join-Path $Root 'index.html'
 if (-not (Test-Path -LiteralPath $idx)) { Write-Error "Missing index.html in $Root" }
 
 $raw = Get-Content -LiteralPath $idx -Raw -Encoding UTF8
 $needle = 'var REPO = "YOUR_GITHUB_USERNAME/ratubaworld-comments"'
-$repl = "var REPO = `"$userLogin/$IssuesRepo`""
-if ($raw -notlike "*$needle*") {
-  if ($raw -like "*var REPO = `"$userLogin/$IssuesRepo`";*") {
+$repl = 'var REPO = "' + $userLogin + '/' + $IssuesRepo + '"'
+
+if ($raw.IndexOf($needle, [StringComparison]::Ordinal) -lt 0) {
+  $wired = 'var REPO = "' + $userLogin + '/' + $IssuesRepo + '"'
+  if ($raw.IndexOf($wired, [StringComparison]::Ordinal) -ge 0) {
     Write-Host "index.html already targets $userLogin/$IssuesRepo"
-  } else {
+  }
+  else {
     Write-Warning 'Could not find REPO placeholder; leaving index.html unchanged.'
   }
-} else {
+}
+else {
   $raw = $raw.Replace($needle, $repl)
   [System.IO.File]::WriteAllText($idx, $raw, [System.Text.UTF8Encoding]::new($false))
 }
 
-# --- Git commit
-& $Git -C $Root config user.email "$userLogin@users.noreply.github.com"
-& $Git -C $Root config user.name  $userLogin
+& $Git -C $Root config user.email ($userLogin + '@users.noreply.github.com')
+& $Git -C $Root config user.name $userLogin
 
 $st = (& $Git -C $Root status --porcelain) -join "`n"
 if ($st.Trim().Length -gt 0) {
   & $Git -C $Root add index.html
   $savedEap = $ErrorActionPreference
   $ErrorActionPreference = 'Continue'
-  & $Git -C $Root commit -m "Configure Utterances: $userLogin/$IssuesRepo" 2>&1 | Out-Null
+  & $Git -C $Root commit -m "Configure Utterances: ${userLogin}/${IssuesRepo}" 2>&1 | Out-Null
   $ErrorActionPreference = $savedEap
-  if (-not $?) { Write-Host 'No new commit (nothing to change or empty commit skipped).' -ForegroundColor Gray }
-}
-
-$encToken = [Uri]::EscapeDataString($token)
-$remoteUrlPush = "https://x-access-token:$encToken@github.com/$userLogin/$PagesRepo.git"
-$remoteClean   = "https://github.com/$userLogin/$PagesRepo.git"
-
-# --- Push (credential only in URL for this invocation)
-& $Git -C $Root remote remove origin 2>$null | Out-Null
-& $Git -C $Root remote add origin $remoteClean
-Write-Host ""
-Write-Host "Pushing to GitHub..."
-$env:GIT_TERMINAL_PROMPT = '0'
-try {
-  & $Git -C $Root push --set-upstream $remoteUrlPush HEAD:main
-} finally {
-  Remove-Item Env:GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue
-}
-
-Write-Host ""
-
-# --- Enable GitHub Pages (legacy HTML from branch root)
-try {
-  $pagesBodyObj = @{ build_type = 'legacy'; source = @{ branch = 'main'; path = '/' } }
-  Invoke-RestMethod -Uri "https://api.github.com/repos/$userLogin/$PagesRepo/pages" -Headers $headers -Method POST `
-    -Body ($pagesBodyObj | ConvertTo-Json -Compress -Depth 5) `
-    -ContentType 'application/json' | Out-Null
-  Write-Host "GitHub Pages: enabled from main /"
-} catch {
-  if ($_.Exception.Response -and [int]$_.Exception.Response.StatusCode -eq 409) {
-    Write-Host "GitHub Pages: already configured (409) — OK"
-  } elseif ($_.ErrorDetails.Message -match '(?i)(already|409)') {
-    Write-Host "GitHub Pages: appears already configured — OK"
-  } else {
-    Write-Host "Pages API note (you may need to flip Pages once in repo Settings): $($_.Exception.Message)" -ForegroundColor Yellow
+  if (-not $?) {
+    Write-Host 'No new commit (nothing to change or empty commit skipped).' -ForegroundColor Gray
   }
 }
 
-$live = "https://$userLogin.github.io/$PagesRepo/"
-Write-Host ""
-Write-Host 'Done. Your site URL (give it ~1–3 minutes on first publish):' -ForegroundColor Green
-Write-Host "  $live" -ForegroundColor Green
-Write-Host ""
-Write-Host 'ONE browser step — install Utterances on your comments repo (GitHub forbids skipping this):' -ForegroundColor Yellow
+$encToken = [Uri]::EscapeDataString($token)
+$remoteUrlPush = 'https://x-access-token:' + $encToken + '@github.com/' + $userLogin + '/' + $PagesRepo + '.git'
+$remoteClean = 'https://github.com/' + $userLogin + '/' + $PagesRepo + '.git'
+
+& $Git -C $Root remote remove origin 2>$null | Out-Null
+& $Git -C $Root remote add origin $remoteClean
+Write-Host ''
+Write-Host 'Pushing to GitHub...'
+$env:GIT_TERMINAL_PROMPT = '0'
+try {
+  & $Git -C $Root push --set-upstream $remoteUrlPush HEAD:main
+}
+finally {
+  Remove-Item Env:GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue
+}
+
+Write-Host ''
+
+try {
+  $pagesBodyObj = @{ build_type = 'legacy'; source = @{ branch = 'main'; path = '/' } }
+  Invoke-RestMethod -Uri ('https://api.github.com/repos/' + $userLogin + '/' + $PagesRepo + '/pages') -Headers $headers -Method POST `
+    -Body ($pagesBodyObj | ConvertTo-Json -Compress -Depth 5) `
+    -ContentType 'application/json' | Out-Null
+  Write-Host 'GitHub Pages: enabled from main /'
+}
+catch {
+  if ($_.Exception.Response -and [int]$_.Exception.Response.StatusCode -eq 409) {
+    Write-Host 'GitHub Pages: already configured (409) - OK'
+  }
+  elseif ($_.ErrorDetails.Message -match '(?i)(already|409)') {
+    Write-Host 'GitHub Pages: appears already configured - OK'
+  }
+  else {
+    Write-Host ('Pages API note (enable Pages manually in repo Settings if needed): ' + $_.Exception.Message) -ForegroundColor Yellow
+  }
+}
+
+$live = 'https://' + $userLogin + '.github.io/' + $PagesRepo + '/'
+Write-Host ''
+Write-Host 'Done. Your site URL (wait about 1-3 minutes on first publish):' -ForegroundColor Green
+Write-Host ('  ' + $live) -ForegroundColor Green
+Write-Host ''
+Write-Host 'Browser step - install Utterances on your comments repo:' -ForegroundColor Yellow
 Write-Host '  Opening https://github.com/apps/utterances/installations/new' -ForegroundColor Yellow
-try { Start-Process 'https://github.com/apps/utterances/installations/new' } catch {}
+try {
+  Start-Process 'https://github.com/apps/utterances/installations/new'
+}
+catch { }
 
 Write-Host ''
 Write-Host 'In that installer, choose repository:' -ForegroundColor White
-Write-Host ("  $userLogin/" + $IssuesRepo) -ForegroundColor Cyan
+Write-Host ('  ' + $userLogin + '/' + $IssuesRepo) -ForegroundColor Cyan
 Write-Host ''
-Write-Host 'Then reload your live URL; the yellow Utterances help box should hide once the app is installed.' -ForegroundColor Gray
+Write-Host 'Then reload your live URL. The yellow help box hides after Utterances is installed.' -ForegroundColor Gray
 
-# scrub
 Remove-Variable token -Force -ErrorAction SilentlyContinue
 $token = $null
