@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!--
+  PREVIEW ONLY — open this file in Safari/Chrome/iPhone Simulator before committing.
+  Not linked from production until you rename/replace index.html.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d1118" />
+  <title>ratubaworld (clean preview)</title>
+  <style>
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: #e8eef5;
+      background:
+        radial-gradient(1200px 800px at 50% -20%, rgba(91,143,189,0.35), transparent 55%),
+        radial-gradient(900px 600px at 100% 40%, rgba(120,182,214,0.12), transparent 50%),
+        #0d1118;
+      padding:
+        calc(14px + env(safe-area-inset-top))
+        calc(14px + env(safe-area-inset-right))
+        calc(28px + env(safe-area-inset-bottom))
+        calc(14px + env(safe-area-inset-left));
+    }
+
+    .wrap {
+      max-width: 36rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    h1 {
+      margin: 0.25rem 0 0;
+      font-weight: 700;
+      font-size: clamp(1.85rem, 5.5vw, 2.35rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+    .subtle {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: rgba(232, 238, 245, 0.62);
+      max-width: 32rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      min-height: 48px;
+      padding: 0 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(180,210,238,0.35);
+      background: rgba(255,255,255,0.06);
+      color: #e8eef5;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: transform 0.12s ease, background 0.15s ease;
+      touch-action: manipulation;
+    }
+    .pill:active { transform: scale(0.97); background: rgba(255,255,255,0.1); }
+
+    section.card {
+      background: rgba(255,255,255,0.97);
+      color: #1a2530;
+      border-radius: 16px;
+      padding: clamp(14px, 3.8vw, 18px);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.5) inset,
+        0 18px 50px rgba(0,0,0,0.38);
+      border: 1px solid rgba(0,30,55,0.08);
+      overflow-x: clip;
+    }
+    .card h2 {
+      margin: 0 0 0.65rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #3a5570;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.82rem;
+      color: rgba(232,238,245,0.35);
+      margin-top: 0.5rem;
+    }
+    footer a { color: rgba(173,216,252,0.75); text-decoration: none; }
+    footer a:hover,
+    footer a:focus-visible { text-decoration: underline; }
+
+    audio.fallback-hidden { display: none; }
+
+    .hint {
+      font-size: 0.82rem;
+      color: rgba(232,238,245,0.45);
+      margin: 0.15rem 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>welcome to ratubaworld</h1>
+      <p class="subtle">Lightweight preview: tap play for chip audio (instant, no bundle). Guestbook uses Cusdis (no poster login once App ID set). Works best after publish on HTTPS.</p>
+      <button type="button" class="pill" id="chip-toggle" aria-pressed="false">Play chip loop</button>
+      <p class="hint">iPhone: sound starts after you tap (browser rule). Pause anytime.</p>
+
+      <!-- Optional: drop `media/ratuba-chiptune.wav` beside this preview and set src="" to prefer your file -->
+      <audio id="file-loop" class="fallback-hidden" src="" preload="none" playsinline loop></audio>
+    </header>
+
+    <section class="card">
+      <h2>guestbook</h2>
+      <p style="font-size:0.88rem;color:#62788f;margin:-4px 0 10px;line-height:1.4;">
+        No GitHub login for readers. You approve posts in your <a href="https://cusdis.com/dashboard" target="_blank" rel="noopener">Cusdis dashboard</a> (spam is manual).
+      </p>
+      <div
+        id="cusdis_thread"
+        data-host="https://cusdis.com"
+        data-app-id="YOUR_CUSDIS_APP_ID"
+        data-page-id="ratubaworld-guestbook-preview"
+        data-page-url="https://ratubaworld.github.io/ratubaworld-pages/preview-clean-mobile.html"
+      ></div>
+      <div id="cusdis-setup-msg" style="margin-top:10px;font-size:0.82rem;color:#92400e;display:none;">
+        Paste your App ID from <a href="https://cusdis.com/dashboard">cusdis.com/dashboard</a> into <code>data-app-id</code>.
+      </div>
+      <script>
+      (function () {
+        var t = document.getElementById('cusdis_thread');
+        var w = document.getElementById('cusdis-setup-msg');
+        if (/^file:/i.test(location.href)) {
+          if (w) {
+            w.style.display = 'block';
+            w.textContent = 'Open via GitHub Pages (https) so the Cusdis iframe can load.';
+          }
+          return;
+        }
+        if (t && w && (t.getAttribute('data-app-id') || '').indexOf('YOUR_CUSDIS_APP_ID') !== -1)
+          w.style.display = 'block';
+      })();
+      </script>
+      <script defer src="https://cusdis.com/js/cusdis.es.js"></script>
+      /*
+        Chiptune: Web Audio arpeggio (no file download). iOS needs a tap before sound.
+      */
+      (function () {
+        var btn = document.getElementById("chip-toggle");
+        var fileEl = document.getElementById("file-loop");
+        if (fileEl && fileEl.src) {
+          fileEl.volume = 0.45;
+          btn.addEventListener("click", function () {
+            if (fileEl.paused) {
+              fileEl.play().catch(function () {});
+              btn.textContent = "Pause chip loop";
+              btn.setAttribute("aria-pressed", "true");
+            } else {
+              fileEl.pause();
+              btn.textContent = "Play chip loop";
+              btn.setAttribute("aria-pressed", "false");
+            }
+          });
+          return;
+        }
+
+        var ctx = null;
+        var running = false;
+        var tickId = null;
+
+        var pattern = [
+          523.25, 659.26, 783.99, 1046.5, 783.99,
+          659.26, 587.33, 392.00, 329.63, 261.63
+        ];
+        var step = 0.085;
+        var periodMs = pattern.length * step * 1000 + 40;
+
+        function beep(freq, t0, dur) {
+          var o = ctx.createOscillator();
+          var g = ctx.createGain();
+          o.type = "square";
+          o.frequency.value = freq;
+          var g0 = 0.065;
+          g.gain.setValueAtTime(0.0001, t0);
+          g.gain.exponentialRampToValueAtTime(g0, t0 + 0.015);
+          g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+          o.connect(g);
+          g.connect(ctx.destination);
+          o.start(t0);
+          o.stop(t0 + dur + 0.03);
+        }
+
+        function lap() {
+          var t0 = ctx.currentTime + 0.03;
+          pattern.forEach(function (f, i) {
+            beep(f, t0 + i * step, 0.06);
+          });
+        }
+
+        btn.addEventListener("click", function () {
+          if (!running) {
+            ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctx.state === "suspended") ctx.resume();
+
+            running = true;
+            lap();
+            tickId = window.setInterval(lap, periodMs);
+
+            btn.textContent = "Pause chip loop";
+            btn.setAttribute("aria-pressed", "true");
+          } else {
+            running = false;
+            if (tickId) clearInterval(tickId);
+            tickId = null;
+            if (ctx) {
+              ctx.close().catch(function () {});
+            }
+            ctx = null;
+            btn.textContent = "Play chip loop";
+            btn.setAttribute("aria-pressed", "false");
+          }
+        });
+      })();
+      </script>
+    </section>
+
+    <footer><a href="https://ratubaworld.github.io/ratubaworld-pages/">Pages</a> · preview-clean.html</footer>
+  </div>
+</body>
+</html>

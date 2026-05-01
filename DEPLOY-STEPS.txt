@@ -1,10 +1,9 @@
-ONE STEP FOR YOU:
+1) Cusdis guestbook (no GitHub required for posters)
+   - Open https://cusdis.com/dashboard and create your site / copy App ID
+   - In index.html, set data-app-id on div#cusdis_thread (replace YOUR_CUSDIS_APP_ID)
+   - Approve incoming comments there (spam is manual)
 
-1) Double‑click DEPLOY.cmd (or PowerShell — run .\DEPLOY.ps1 from this folder).
+2) Site deploy (same as before): double-click DEPLOY.cmd OR push to GitHub.
+   Uses a PAT: https://github.com/settings/tokens/new (classic, repo scope)
 
-2) When asked: paste one GitHub personal access token.
-   Classic token with "repo" scope: https://github.com/settings/tokens/new
-
-Everything else — new repos if needed, index.html REPO rewrite, git push, Pages on — runs from the script.
-
-When the browser opens, install Utterances on YOUR "ratubaworld-comments" repo (GitHub forces this approval once).
+Note: Deploy script may still create ratubaworld-comments for legacy Utterances; you can ignore that repo once you fully switch to Cusdis.
