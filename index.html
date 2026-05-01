@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!--
-  Main Ratuba home (mobile-first). Classic 2008 chrome: classic-2008.html
+  Main Ratuba home (mobile-first). Music: embedded YouTube (streamed from YouTube, not downloaded here).
+  Classic 2008 chrome: classic-2008.html
 -->
 <html lang="en">
 <head>
@@ -113,7 +114,19 @@
       letter-spacing: 0.01em;
     }
 
-    audio.fallback-hidden { display: none; }
+    .yt-shell {
+      margin-top: 12px;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #0a0e14;
+    }
+    .yt-shell > div {
+      width: 100%;
+      height: 100%;
+    }
 
     .hint {
       font-size: 0.82rem;
@@ -126,12 +139,18 @@
   <div class="wrap">
     <header>
       <h1>welcome to ratubaworld</h1>
-      <p class="subtle">Tap play for the original NES-style title cue (~40s, then loops): <code>media/ratuba-chiptune.wav</code>. Utterances guestbook requires GitHub to post.</p>
-      <button type="button" class="pill" id="chip-toggle" aria-pressed="false">Play chip loop</button>
-      <p class="hint" id="chip-hint">iPhone: sound starts after you tap. Pause anytime.</p>
+      <p class="subtle">
+        Music plays through an embedded <a href="https://www.youtube.com/watch?v=hHW6yp8Ddp4" target="_blank" rel="noopener noreferrer">YouTube</a> player (streamed from YouTube, not stored on this site). Utterances guestbook requires GitHub to post.
+      </p>
+      <button type="button" class="pill" id="chip-toggle" aria-pressed="false" aria-controls="yt-player-host">Play</button>
+      <p class="hint" id="chip-hint">Tap Play to start; pause anytime. If the video does not allow embedding, use &ldquo;Open on YouTube&rdquo; below.</p>
 
-      <!-- src set in script so URLs like …/ratubaworld-pages (no trailing slash) still resolve -->
-      <audio id="file-loop" class="fallback-hidden" preload="metadata" playsinline loop></audio>
+      <div class="yt-shell" id="yt-shell">
+        <div id="yt-player-host"></div>
+      </div>
+      <p class="hint" style="margin-top:8px;">
+        <a href="https://www.youtube.com/watch?v=hHW6yp8Ddp4" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+      </p>
     </header>
 
     <section class="card">
@@ -172,108 +191,118 @@
       </script>
       <script>
       (function () {
+        var VIDEO_ID = "hHW6yp8Ddp4";
         var btn = document.getElementById("chip-toggle");
-        var fileEl = document.getElementById("file-loop");
         var hint = document.getElementById("chip-hint");
-        if (!btn || !fileEl) return;
+        var host = document.getElementById("yt-player-host");
+        var shell = document.getElementById("yt-shell");
+        if (!btn || !host) return;
 
         var hintDefault = hint ? hint.textContent : "";
+        var player = null;
+        var playerReady = false;
+        var pendingPlay = false;
 
-        function resolveChipWavHref() {
-          try {
-            var base = window.location.href.split("#")[0].split("?")[0];
-            if (/\.html?$/i.test(base)) base = base.replace(/[^/\\]+$/, "");
-            if (!/\/$/i.test(base)) base += "/";
-            return new URL("media/ratuba-chiptune.wav", base).href;
-          } catch (e) {
-            return "media/ratuba-chiptune.wav";
-          }
+        function playerHeightPx() {
+          if (shell && shell.offsetWidth > 16)
+            return Math.max(200, Math.round((shell.offsetWidth * 9) / 16));
+          return 220;
         }
 
-        fileEl.src = resolveChipWavHref();
-        fileEl.volume = 0.45;
+        function setPlayingUi(playing) {
+          btn.textContent = playing ? "Pause" : "Play";
+          btn.setAttribute("aria-pressed", playing ? "true" : "false");
+        }
 
-        var fileSrc = (fileEl.getAttribute("src") || "").trim();
-        if (fileSrc.length > 0) {
-          btn.addEventListener("click", function () {
-            if (fileEl.paused) {
-              if (hint) hint.textContent = hintDefault;
-              fileEl.play().catch(function (err) {
+        function onPlayerStateChange(e) {
+          if (!window.YT) return;
+          if (
+            e.data === YT.PlayerState.PLAYING ||
+            e.data === YT.PlayerState.BUFFERING
+          )
+            setPlayingUi(true);
+          else if (
+            e.data === YT.PlayerState.PAUSED ||
+            e.data === YT.PlayerState.ENDED ||
+            e.data === YT.PlayerState.CUED
+          )
+            setPlayingUi(false);
+        }
+
+        function createPlayer() {
+          player = new YT.Player("yt-player-host", {
+            videoId: VIDEO_ID,
+            width: "100%",
+            height: playerHeightPx(),
+            playerVars: {
+              playsinline: 1,
+              rel: 0,
+              modestbranding: 1,
+            },
+            events: {
+              onReady: function () {
+                playerReady = true;
+                if (hint) hint.textContent = hintDefault;
+                if (pendingPlay && player && player.playVideo) {
+                  pendingPlay = false;
+                  player.playVideo();
+                }
+              },
+              onError: function (ev) {
                 if (hint)
                   hint.textContent =
-                    "Audio did not play: " +
-                    (err && err.message ? err.message : "unknown") +
-                    " (volume / mute / network?).";
-                btn.textContent = "Play chip loop";
-                btn.setAttribute("aria-pressed", "false");
-              });
-              btn.textContent = "Pause chip loop";
-              btn.setAttribute("aria-pressed", "true");
-            } else {
-              fileEl.pause();
-              if (hint) hint.textContent = hintDefault;
-              btn.textContent = "Play chip loop";
-              btn.setAttribute("aria-pressed", "false");
-            }
+                    "This video may not allow embedding (code " +
+                    (ev.data != null ? ev.data : "?") +
+                    "). Use Open on YouTube.";
+                pendingPlay = false;
+                setPlayingUi(false);
+              },
+              onStateChange: onPlayerStateChange,
+            },
           });
-          return;
         }
 
-        var ctx = null;
-        var running = false;
-        var tickId = null;
+        window.onYouTubeIframeAPIReady = function () {
+          createPlayer();
+        };
 
-        var pattern = [
-          523.25, 659.26, 783.99, 1046.5, 783.99,
-          659.26, 587.33, 392.00, 329.63, 261.63
-        ];
-        var step = 0.085;
-        var periodMs = pattern.length * step * 1000 + 40;
-
-        function beep(freq, t0, dur) {
-          var o = ctx.createOscillator();
-          var g = ctx.createGain();
-          o.type = "square";
-          o.frequency.value = freq;
-          var g0 = 0.065;
-          g.gain.setValueAtTime(0.0001, t0);
-          g.gain.exponentialRampToValueAtTime(g0, t0 + 0.015);
-          g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-          o.connect(g);
-          g.connect(ctx.destination);
-          o.start(t0);
-          o.stop(t0 + dur + 0.03);
-        }
-
-        function lap() {
-          var t0 = ctx.currentTime + 0.03;
-          pattern.forEach(function (f, i) {
-            beep(f, t0 + i * step, 0.06);
-          });
+        if (window.YT && window.YT.Player) createPlayer();
+        else {
+          var tag = document.createElement("script");
+          tag.async = true;
+          tag.src = "https://www.youtube.com/iframe_api";
+          document.head.appendChild(tag);
         }
 
         btn.addEventListener("click", function () {
-          if (!running) {
-            ctx = new (window.AudioContext || window.webkitAudioContext)();
-            if (ctx.state === "suspended") ctx.resume();
-
-            running = true;
-            lap();
-            tickId = window.setInterval(lap, periodMs);
-
-            btn.textContent = "Pause chip loop";
-            btn.setAttribute("aria-pressed", "true");
-          } else {
-            running = false;
-            if (tickId) clearInterval(tickId);
-            tickId = null;
-            if (ctx) {
-              ctx.close().catch(function () {});
-            }
-            ctx = null;
-            btn.textContent = "Play chip loop";
-            btn.setAttribute("aria-pressed", "false");
+          if (!window.YT || !YT.Player || !player || !playerReady) {
+            pendingPlay = true;
+            if (hint) hint.textContent = "Loading player\u2026";
+            return;
           }
+          try {
+            var st = player.getPlayerState();
+            if (st === YT.PlayerState.PLAYING) {
+              player.pauseVideo();
+              setPlayingUi(false);
+            } else {
+              player.playVideo();
+              setPlayingUi(true);
+            }
+          } catch (err) {
+            if (hint)
+              hint.textContent =
+                "Control failed; try Open on YouTube. " +
+                (err && err.message ? err.message : "");
+            pendingPlay = false;
+            setPlayingUi(false);
+          }
+        });
+
+        window.addEventListener("beforeunload", function () {
+          try {
+            if (player && player.destroy) player.destroy();
+          } catch (e2) {}
         });
       })();
       </script>

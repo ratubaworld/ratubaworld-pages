@@ -1,8 +1,8 @@
-Home: index.html (mobile-friendly). Classic Wayback-style chrome: classic-2008.html.
-Chiptune file: media/ratuba-chiptune.wav (regenerate: python scripts/make_ratuba_chiptune_wav.py).
+Home: index.html (mobile-friendly). Music: embedded YouTube (set `VIDEO_ID` in index.html). Optional local chiptune: `media/ratuba-chiptune.wav` + `scripts/make_ratuba_chiptune_wav.py`.
+Classic Wayback-style chrome: classic-2008.html.
 preview-clean-mobile.html redirects to index.html.
 
-Version label: edit version.json ("version": "1.0.1"). The site footer shows that semver plus
+Version label: edit version.json. The site footer shows that semver plus
 the latest commit date/time for ref "main" (via public GitHub API). Bump version when you ship
 user-visible changes; commit time updates automatically after each push.
 
