@@ -164,6 +164,12 @@ if ($st.Trim().Length -gt 0) {
   if (Test-Path (Join-Path $Root 'preview-clean-mobile.html')) {
     & $Git -C $Root add preview-clean-mobile.html
   }
+  if (Test-Path (Join-Path $Root 'version.json')) {
+    & $Git -C $Root add version.json
+  }
+  if (Test-Path (Join-Path $Root 'build-stamp.js')) {
+    & $Git -C $Root add build-stamp.js
+  }
   $savedEap = $ErrorActionPreference
   $ErrorActionPreference = 'Continue'
   & $Git -C $Root commit -m "Configure Utterances: ${userLogin}/${IssuesRepo}" 2>&1 | Out-Null

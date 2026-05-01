@@ -342,6 +342,14 @@
       color: rgba(0, 0, 0, 0.55);
       margin-top: 12px;
     }
+    .build-note {
+      text-align: center;
+      font-size: 10px;
+      color: rgba(0, 0, 0, 0.45);
+      margin-top: 2px;
+      margin-bottom: 0;
+      font-variant-numeric: tabular-nums;
+    }
     @media (max-width: 900px) {
       .welcome-wrap .welcome-cap { display: none; }
       .col-left-ads { width: 100%; order: 3; }
@@ -494,6 +502,8 @@
     <p class="note">
       <a href="index.html" class="link1">Mobile-friendly home</a> &middot; cosmetic rebuild from archived HTML; guestbook uses Utterances + GitHub Issues.
     </p>
+    <p class="build-note"><span class="build-stamp" aria-live="polite">&nbsp;</span></p>
+    <script defer src="build-stamp.js"></script>
   </div>
 </body>
 </html>

@@ -104,6 +104,15 @@
     footer a:hover,
     footer a:focus-visible { text-decoration: underline; }
 
+    .build-line {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.76rem;
+      color: rgba(232,238,245,0.42);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
+    }
+
     audio.fallback-hidden { display: none; }
 
     .hint {
@@ -242,7 +251,11 @@
       </script>
     </section>
 
-    <footer><a href="classic-2008.html">2008 layout</a> &middot; ratuba world</footer>
+    <footer>
+      <a href="classic-2008.html">2008 layout</a> &middot; ratuba world
+      <span class="build-line"><span class="build-stamp" aria-live="polite">&nbsp;</span></span>
+    </footer>
+    <script defer src="build-stamp.js"></script>
   </div>
 </body>
 </html>
