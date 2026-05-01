@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#050a14" />
+  <title>RATUBA WORLD — Featured: Kefka’s floating void</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Teko:wght@500;600;700&family=IBM+Plex+Sans+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --void: #040810;
+      --panel: rgba(8, 14, 28, 0.94);
+      --cyan: #2aefff;
+      --cyan-deep: #0a8abf;
+      --steel: #3a5470;
+      --wire: rgba(42, 200, 255, 0.35);
+      --text: #e8f4ff;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+        env(safe-area-inset-left);
+      font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
+      color: var(--text);
+      background: radial-gradient(120% 80% at 50% 0%, #0a1628 0%, var(--void) 45%, #000 100%);
+    }
+
+    a {
+      color: #7dd8ff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 clamp(12px, 3vw, 28px);
+    }
+
+    /* —— Wired header frame —— */
+    .wired-top {
+      position: relative;
+      padding: clamp(14px, 3vw, 22px) 0 8px;
+    }
+
+    .wired-top svg.cables-svg {
+      position: absolute;
+      left: -4%;
+      top: -4px;
+      width: 108%;
+      height: clamp(72px, 14vw, 110px);
+      pointer-events: none;
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    .top-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .logo-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .logo-ratuba {
+      font-family: Audiowide, sans-serif;
+      font-size: clamp(1.5rem, 5.5vw, 2.75rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--cyan);
+      text-shadow:
+        0 0 10px rgba(42, 239, 255, 0.75),
+        0 0 40px rgba(30, 120, 200, 0.55),
+        0 2px 2px rgba(0, 0, 0, 0.9),
+        -1px -1px 0 #005060;
+      filter: drop-shadow(0 0 22px rgba(42, 200, 255, 0.35));
+    }
+
+    .logo-world {
+      font-family: Teko, sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.4rem, 4.4vw, 2.05rem);
+      letter-spacing: 0.54em;
+      text-transform: uppercase;
+      padding-left: 0.06em;
+      color: rgba(220, 240, 255, 0.95);
+      text-shadow: 0 0 12px rgba(42, 200, 255, 0.45);
+    }
+
+    .spark {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+
+    .spark i {
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 25% 25%, #fff, var(--cyan));
+      box-shadow: 0 0 14px var(--cyan);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: 0.55;
+      }
+    }
+
+    .mini-login {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mini-login label.visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      clip: rect(0 0 0 0);
+      overflow: hidden;
+    }
+
+    .mini-login input {
+      width: clamp(92px, 22vw, 128px);
+      padding: 8px 10px;
+      font-size: 0.82rem;
+      border: 1px solid rgba(42, 150, 200, 0.45);
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--text);
+    }
+
+    .mini-login button {
+      font-family: inherit;
+      cursor: pointer;
+      padding: 8px 12px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border: 2px solid var(--cyan-deep);
+      border-radius: 4px;
+      background: linear-gradient(180deg, #1a6090 0%, #063050 100%);
+      color: #fff;
+      text-shadow: 0 1px 0 #000;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      min-height: 42px;
+    }
+
+    /* —— Nav rails —— */
+    .rail-nav-wrap {
+      position: relative;
+      margin-top: clamp(14px, 3vw, 22px);
+    }
+
+    .rail-nav-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 10px;
+      padding: 10px clamp(12px, 3vw, 18px);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(42, 180, 255, 0.35) transparent;
+      background: linear-gradient(180deg, rgba(26, 50, 80, 0.35), transparent);
+      border: 2px solid rgba(42, 110, 160, 0.55);
+      border-radius: 999px;
+      box-shadow:
+        inset 0 0 26px rgba(0, 40, 80, 0.45),
+        0 0 28px rgba(20, 100, 180, 0.12);
+    }
+
+    .rail-nav-inner::-webkit-scrollbar {
+      height: 5px;
+    }
+    .rail-nav-inner::-webkit-scrollbar-thumb {
+      background: rgba(42, 150, 200, 0.4);
+      border-radius: 4px;
+    }
+
+    .rail-nav-inner a {
+      flex-shrink: 0;
+      font-family: Teko, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 9px clamp(13px, 2.8vw, 18px);
+      font-size: clamp(1rem, 2.9vw, 1.35rem);
+      color: rgba(253, 254, 255, 0.97);
+      text-decoration: none;
+      white-space: nowrap;
+      border-radius: 999px;
+      border: 1px solid rgba(80, 180, 255, 0.45);
+      background: linear-gradient(180deg, #1b6cbf 0%, #0f3160 45%, #06182c 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 2px 10px rgba(0, 0, 0, 0.5);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .rail-nav-inner a:hover {
+      filter: brightness(1.08);
+      text-decoration: none;
+    }
+
+    .rail-nav-inner span.dot {
+      flex-shrink: 0;
+      opacity: 0.45;
+      color: var(--cyan);
+      font-size: 0.5rem;
+    }
+
+    @media (min-width: 900px) {
+      .rail-nav-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .rail-nav-inner span.dot {
+        display: none;
+      }
+      .rail-nav-inner {
+        gap: 12px 10px;
+        border-radius: 14px;
+      }
+    }
+
+    /* —— Hero with blueprint raster —— */
+    .hero {
+      margin-top: clamp(18px, 4vw, 28px);
+      position: relative;
+      border-radius: clamp(6px, 1.8vw, 14px);
+      overflow: hidden;
+      border: 3px solid rgba(42, 160, 220, 0.55);
+      box-shadow:
+        0 0 0 1px rgba(0, 40, 80, 0.6),
+        0 18px 50px rgba(0, 0, 0, 0.75),
+        0 0 60px rgba(20, 100, 200, 0.15);
+    }
+
+    .hero img {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      background: #02060c;
+    }
+
+    /* Focus crop / zoom — mobile centers the floating ruin */
+    @media (max-width: 719px) {
+      .hero {
+        max-height: min(340px, 58vw + 140px);
+      }
+      .hero img {
+        width: 100%;
+        height: 100%;
+        max-height: min(340px, 58vw + 140px);
+        object-fit: cover;
+        object-position: 50% 38%;
+      }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: clamp(18px, 4vw, 36px);
+      padding-top: clamp(28px, 9vw, 56px);
+      background: linear-gradient(to top, rgba(2, 6, 12, 0.97), rgba(2, 6, 12, 0.25) 70%, transparent);
+      pointer-events: none;
+    }
+
+    .hero-overlay .inner {
+      pointer-events: auto;
+      max-width: 52rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-caption {
+      font-family: "IBM Plex Sans Condensed", sans-serif;
+      font-weight: 700;
+      margin: 0 0 clamp(14px, 3vw, 22px);
+      font-size: clamp(0.75rem, 3.2vw + 0.08rem, 1.42rem);
+      line-height: 1.28;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-shadow:
+        0 0 20px rgba(0, 0, 0, 0.95),
+        0 2px 12px rgba(0, 0, 0, 0.9),
+        0 0 16px rgba(40, 120, 200, 0.45);
+    }
+
+    .ascend-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+
+    .ascend-btn {
+      font-family: Audiowide, sans-serif;
+      cursor: pointer;
+      font-size: clamp(0.68rem, 2.25vw + 0.06rem, 1.06rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: clamp(13px, 3vw, 18px) clamp(22px, 6vw, 44px);
+      min-height: 48px;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      background: linear-gradient(180deg, #3aaafc 0%, #1a5698 42%, #0a2850 100%);
+      border: solid 4px transparent;
+      background-clip: padding-box;
+      box-shadow:
+        inset 2px 2px 0 rgba(255, 255, 255, 0.22),
+        inset -2px -3px 0 rgba(0, 0, 0, 0.45),
+        0 0 0 2px rgba(12, 30, 50, 0.9),
+        0 12px 32px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(42, 180, 255, 0.25);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+      transition: transform 0.12s ease, filter 0.15s ease;
+    }
+
+    .ascend-btn:hover {
+      filter: brightness(1.06);
+      transform: translateY(-2px);
+    }
+
+    .ascend-btn:active {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 719px) {
+      .hero {
+        padding-bottom: 0;
+      }
+      .hero-overlay {
+        position: relative;
+        inset: auto;
+      }
+      .hero img {
+        object-position: 50% 32%;
+      }
+    }
+
+    /* —— Pipe panel shell —— */
+    .pipe-panel {
+      position: relative;
+      padding: 16px 18px;
+      margin: 6px;
+      border-radius: 10px;
+      background: linear-gradient(165deg, rgba(255, 255, 255, 0.04), transparent),
+        var(--panel);
+      border: 7px solid #2a4662;
+      box-shadow:
+        0 0 0 1px rgba(80, 150, 200, 0.35),
+        inset 0 0 0 2px rgba(0, 0, 0, 0.45),
+        inset 0 -8px 30px rgba(0, 20, 50, 0.35),
+        0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .pipe-panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pipe-panel::before {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-radius: 6px;
+      border: 1px dashed rgba(42, 200, 255, 0.12);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .section-title {
+      font-family: Audiowide, sans-serif;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+      color: var(--cyan);
+      text-shadow: 0 0 14px rgba(42, 200, 255, 0.35);
+      border-bottom: 1px solid rgba(42, 160, 200, 0.28);
+      padding-bottom: 6px;
+    }
+
+    /* —— Bottom grid —— */
+    .grid-wired {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(22px, 4vw, 30px);
+      margin-top: clamp(28px, 5vw, 40px);
+      padding-bottom: clamp(44px, 8vw, 72px);
+    }
+
+    @media (min-width: 860px) {
+      .grid-wired {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.22fr) minmax(0, 0.95fr);
+      }
+    }
+
+    .signal-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .signal-list li::before {
+      content: "//";
+      color: rgba(42, 200, 255, 0.35);
+      font-family: ui-monospace, monospace;
+      margin-right: 6px;
+      font-size: 0.8rem;
+    }
+
+    .plug-btn {
+      width: 100%;
+      margin-top: 14px;
+      cursor: pointer;
+      font-family: Audiowide, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      padding: 12px;
+      min-height: 48px;
+      text-transform: uppercase;
+      border-radius: 5px;
+      border: 2px solid rgba(80, 180, 255, 0.55);
+      color: #fff;
+      background: linear-gradient(180deg, #3898e8 0%, #124068 48%, #06182c 100%);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.15),
+        0 4px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Thumbs strip */
+    .thumb-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 520px) {
+      .thumb-row {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .thumb-unit {
+      text-align: center;
+    }
+
+    .thumb-unit button.thumb-hit {
+      display: block;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .thumb-vis {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 2px solid rgba(60, 150, 200, 0.45);
+      overflow: hidden;
+      box-shadow:
+        inset 0 0 26px rgba(0, 0, 0, 0.7),
+        0 0 16px rgba(30, 100, 180, 0.12);
+      background: linear-gradient(145deg, #0a1624, #02060c);
+    }
+
+    .thumb-vis.t1 {
+      background:
+        radial-gradient(circle at 40% 30%, rgba(42, 200, 255, 0.25), transparent 50%),
+        repeating-linear-gradient(125deg, #080c14, #080c14 3px, #121a28 3px, #121a28 4px);
+    }
+    .thumb-vis.t2 {
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(0, 140, 255, 0.35), transparent 55%),
+        linear-gradient(to bottom right, transparent 42%, rgba(255, 255, 255, 0.06) 50%, transparent 56%),
+        #050810;
+    }
+    .thumb-vis.t3 {
+      background:
+        repeating-linear-gradient(-12deg, #060a10, #060a10 2px, #0c1420 2px, #0c1420 5px),
+        radial-gradient(circle at 62% 70%, rgba(42, 220, 255, 0.2), transparent 45%),
+        #040808;
+    }
+    .thumb-vis.t4 {
+      background:
+        conic-gradient(from 200deg at 60% 40%, #101820 0deg, transparent 120deg),
+        repeating-linear-gradient(90deg, #121004, #121004 4px, #1a1610 4px, #1a1610 5px);
+    }
+
+    .thumb-unit figcaption {
+      margin-top: 8px;
+      font-weight: 700;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(240, 250, 255, 0.92);
+      line-height: 1.2;
+    }
+
+    /* Charts column */
+    .chart-wrap {
+      margin-top: 4px;
+    }
+
+    .bar-meter {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+      height: 100px;
+    }
+
+    .bar-meter .seg {
+      flex: 1;
+      max-width: 40px;
+      margin: 0 auto;
+      height: var(--h);
+      transform-origin: bottom;
+      animation: bars 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      transform: scaleY(0.05);
+      border-radius: 4px;
+      background: linear-gradient(to top, #0860a8, var(--cyan));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .bar-meter .seg:nth-child(1) {
+      --h: 56%;
+      animation-delay: 0.02s;
+    }
+    .bar-meter .seg:nth-child(2) {
+      --h: 76%;
+      animation-delay: 0.14s;
+    }
+    .bar-meter .seg:nth-child(3) {
+      --h: 41%;
+      animation-delay: 0.26s;
+    }
+    .bar-meter .seg:nth-child(4) {
+      --h: 93%;
+      animation-delay: 0.38s;
+    }
+
+    @keyframes bars {
+      to {
+        transform: scaleY(1);
+      }
+    }
+
+    .line-chart {
+      width: 100%;
+      height: 96px;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 22px 16px 32px;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: rgba(210, 230, 255, 0.55);
+      border-top: 2px solid rgba(42, 100, 150, 0.35);
+      background: radial-gradient(80% 100% at 50% 0%, rgba(20, 50, 90, 0.22), transparent 70%);
+    }
+
+    footer strong {
+      color: rgba(127, 210, 255, 0.85);
+      font-weight: 600;
+    }
+
+    /* Wire footer trim */
+    .footer-wires {
+      max-width: 1100px;
+      margin: 0 auto -6px;
+      height: 18px;
+      opacity: 0.55;
+      padding: 0 clamp(12px, 3vw, 28px);
+    }
+
+    #status-msg {
+      min-height: 1.25em;
+      margin-top: 10px;
+      font-size: 0.76rem;
+      color: rgba(160, 220, 255, 0.75);
+      text-align: center;
+    }
+
+    figure {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="wired-top">
+      <svg class="cables-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" aria-hidden="true">
+        <g fill="none" stroke-linecap="round" stroke-width="2.8">
+          <path d="M-20 118 C140 74 340 156 560 112 S920 156 1180 80" stroke="rgba(42,220,255,0.22)" />
+          <path d="M0 106 C260 140 560 82 740 126 S980 146 1190 50" stroke="rgba(38,140,210,0.28)" stroke-width="3.8" />
+          <path d="M40 4 C260 118 820 154 980 118" stroke="rgba(0,0,0,0.6)" stroke-width="6" opacity="0.55" />
+        </g>
+      </svg>
+      <div class="top-inner">
+        <div class="logo-stack">
+          <span class="spark" aria-hidden="true"><i></i><i style="animation-delay:.4s"></i><i style="animation-delay:.8s"></i></span>
+          <span class="logo-ratuba">RATUBA</span>
+          <span class="logo-world">WORLD</span>
+        </div>
+        <form class="mini-login" id="login-form" autocomplete="off">
+          <label class="visually-hidden" for="u">User uplink</label>
+          <input id="u" type="text" placeholder="ghost_id" name="fakeuser" />
+          <label class="visually-hidden" for="p">Cipher</label>
+          <input id="p" type="password" placeholder="••••••" name="fakepw" />
+          <button type="submit">go</button>
+        </form>
+      </div>
+    </header>
+
+    <div class="rail-nav-wrap">
+      <nav class="rail-nav-inner" aria-label="Main">
+        <a href="#signals">games</a>
+        <span class="dot" aria-hidden="true">●</span>
+        <a href="#signals">animations</a>
+        <span class="dot" aria-hidden="true">●</span>
+        <a href="#thumbs">art</a>
+        <span class="dot" aria-hidden="true">●</span>
+        <a href="#thumbs">music</a>
+        <span class="dot" aria-hidden="true">●</span>
+        <a href="#signals">forums</a>
+        <span class="dot" aria-hidden="true">●</span>
+        <a href="#signals">community</a>
+        <span class="dot" aria-hidden="true">●</span>
+        <a href="#signals">upload</a>
+        <span class="dot" aria-hidden="true">●</span>
+        <a href="#signals">random</a>
+      </nav>
+    </div>
+
+    <section class="hero" aria-labelledby="feat-caption">
+      <img
+        src="assets/ratuba-blueprint-hero.png"
+        width="1024"
+        height="687"
+        alt="Dark floating industrial ruins in a cloudy sky — electric cyan energy in the masonry"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <div class="hero-overlay">
+        <div class="inner">
+          <p id="feat-caption" class="hero-caption">
+            Featured: Kefka’s floating void — new chaos protocol
+          </p>
+          <div class="ascend-wrap">
+            <button type="button" class="ascend-btn" id="ascend">Ascend to the ruin</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid-wired">
+      <aside id="signals" class="pipe-panel">
+        <h2 class="section-title">Recent fallen signals</h2>
+        <ul class="signal-list">
+          <li><a href="#">Final broadcast — sector 7 archive</a></li>
+          <li><a href="#">Pipeline rupture — riot thread</a></li>
+          <li><a href="#">Void uplink — handshake log</a></li>
+          <li><a href="#">Grid rebellion — hot cache</a></li>
+        </ul>
+        <button type="button" class="plug-btn" id="plug">Plug into the ruin</button>
+      </aside>
+
+      <section id="thumbs" class="pipe-panel">
+        <h2 class="section-title">Clips / tips</h2>
+        <div class="thumb-row">
+          <figure class="thumb-unit">
+            <button type="button" class="thumb-hit" data-msg="Pipeline riot channel armed.">
+              <div class="thumb-vis t1" role="presentation"></div>
+            </button>
+            <figcaption>Pipeline riot</figcaption>
+          </figure>
+          <figure class="thumb-unit">
+            <button type="button" class="thumb-hit" data-msg="Wired chaos dump sealed.">
+              <div class="thumb-vis t2" role="presentation"></div>
+            </button>
+            <figcaption>Wired chaos dump</figcaption>
+          </figure>
+          <figure class="thumb-unit">
+            <button type="button" class="thumb-hit" data-msg="Floating cable run synced.">
+              <div class="thumb-vis t3" role="presentation"></div>
+            </button>
+            <figcaption>Floating cable run</figcaption>
+          </figure>
+          <figure class="thumb-unit">
+            <button type="button" class="thumb-hit" data-msg="Rusted grid rebellion routed.">
+              <div class="thumb-vis t4" role="presentation"></div>
+            </button>
+            <figcaption>Rusted grid rebellion</figcaption>
+          </figure>
+        </div>
+        <p id="status-msg" aria-live="polite"></p>
+      </section>
+
+      <aside class="pipe-panel">
+        <h2 class="section-title">Uplink / analysis</h2>
+        <div class="chart-wrap">
+          <div class="bar-meter" role="img" aria-label="Signal strength bars">
+            <div class="seg"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+          </div>
+          <svg class="line-chart" viewBox="0 0 280 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#063060" />
+                <stop offset="45%" stop-color="#2aefff" />
+                <stop offset="100%" stop-color="#2080e0" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M8 78 C48 70 68 86 108 58 S168 78 208 44 S248 66 272 36"
+              fill="none"
+              stroke="url(#lg)"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-dasharray="360"
+              stroke-dashoffset="360"
+            >
+              <animate attributeName="stroke-dashoffset" from="360" to="0" dur="2.2s" fill="freeze" />
+            </path>
+          </svg>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <svg class="footer-wires" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 24" preserveAspectRatio="none" aria-hidden="true">
+    <path
+      d="M0 16h1200M0 8c200-8 400 16 600 6s400-10 600 2"
+      fill="none"
+      stroke="rgba(42,180,255,0.15)"
+      stroke-width="1.5"
+    />
+  </svg>
+  <footer>
+    <strong>© 2008 RATUBA WORLD</strong> • The world is in ruins • Embrace the chaos<br />
+    <span style="opacity: 0.75">Blueprint build — /experimental/ratuba-world-blueprint.html</span>
+  </footer>
+
+  <script>
+    (function () {
+      document.getElementById("login-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        document.getElementById("status-msg").textContent = "Login mock: no data leaves this page.";
+      });
+      document.getElementById("ascend").addEventListener("click", function () {
+        document.getElementById("signals").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      document.getElementById("plug").addEventListener("click", function () {
+        document.getElementById("status-msg").textContent = "Socket hot — fictional handshake OK.";
+      });
+      document.querySelectorAll(".thumb-hit").forEach(function (b) {
+        b.addEventListener("click", function () {
+          document.getElementById("status-msg").textContent = b.getAttribute("data-msg") || "";
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
